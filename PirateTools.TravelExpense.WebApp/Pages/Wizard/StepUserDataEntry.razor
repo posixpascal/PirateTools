@@ -1,0 +1,69 @@
+﻿@page "/StepUserDataEntry"
+
+@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+    return;
+}
+
+<div class="row" style="height: 100%; align-items: center;">
+    <div>
+        <h1>Benutzerdaten</h1>
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input class="form-control" @bind=AppData.CurrentReport.Pirate.Name />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mitgliedsnummer</label>
+            <input class="form-control" type="number" min="0" step="1" @bind=AppData.CurrentReport.Pirate.MemberID />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">E-Mail (optional)</label>
+            <input class="form-control" type="email" @bind=AppData.CurrentReport.Pirate.EMail />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Landesverband</label>
+            <select class="form-select" @bind=SelectedFedeationId>
+                @foreach (var federation in AppData.Federations) {
+                    <option value=@federation.Id>@federation.FullName()</option>
+                }
+            </select>
+        </div>
+
+        <h1>Adresse</h1>
+
+        <div class="row">
+            <div class="col-9">
+                <div class="mb-3">
+                    <label class="form-label">Straße</label>
+                    <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.LocalIdentifier />
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label">Hausnummer</label>
+                    <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.HouseIdentifier />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <div class="mb-3">
+                    <label class="form-label">Postleitzahl</label>
+                    <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.PostCode />
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="mb-3">
+                    <label class="form-label">Ort</label>
+                    <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.City />
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <NavLink href="" class="btn btn-primary">Zurück</NavLink>
+            <NavLink href="StepFederationDataEntry" class="btn btn-primary">Weiter</NavLink>
+        </div>
+    </div>
+</div>

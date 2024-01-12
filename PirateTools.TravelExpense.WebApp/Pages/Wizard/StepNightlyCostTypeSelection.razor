@@ -1,0 +1,50 @@
+﻿@page "/StepNightlyCostTypeSelection"
+
+@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+    return;
+}
+
+<div class="row" style="height: 100%; align-items: center;">
+    <div>
+        <h1 class="mb-4">Übernachtungskosten</h1>
+
+        <div class="row mb-3">
+            <div class="col">
+                <NavLink @onclick=TypeSpecified class="no-decoration">
+                    <div class="card box-highlight h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Kosten nach Beleg</h5>
+                            <p class="card-text">Du hast einen Beleg für deine Übernachtungskosten.</p>
+                        </div>
+                    </div>
+                </NavLink>
+            </div>
+
+            <div class="col">
+                <NavLink @onclick=TypeFlatRate class="no-decoration">
+                    <div class="card box-highlight h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Pauschal</h5>
+                            <p class="card-text">Die 20 € Übernachtungspauschale wird angewandt.</p>
+                        </div>
+                    </div>
+                </NavLink>
+            </div>
+
+            <div class="col">
+                <NavLink @onclick=TypeNone class="no-decoration">
+                    <div class="card box-highlight h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Keine Übernachtungskosten</h5>
+                            <p class="card-text">Du hattest keine Übernachtungskosten.</p>
+                        </div>
+                    </div>
+                </NavLink>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <NavLink @onclick=GoBack class="btn btn-primary">Zurück</NavLink>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+﻿@page "/StepOtherCostsSelection"
+
+@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+    return;
+}
+
+<div class="row" style="height: 100%; align-items: center;">
+    <div>
+        <h1 class="mb-4">Hattest du sonstige Kosten?</h1>
+        <p>
+            Du kannst z.B. Parkplatzkosten oder ähnliches einreichen.
+        </p>
+
+        <div class="row mb-3">
+            <div class="col">
+                <NavLink href="/StepOtherCostsOverview" class="no-decoration">
+                    <div class="card box-highlight h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Ja</h5>
+                        </div>
+                    </div>
+                </NavLink>
+            </div>
+
+            <div class="col">
+                <NavLink href="/StepDonationSelection" class="no-decoration">
+                    <div class="card box-highlight h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Nein</h5>
+                        </div>
+                    </div>
+                </NavLink>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <NavLink @onclick=GoBack class="btn btn-primary">Zurück</NavLink>
+        </div>
+    </div>
+</div>

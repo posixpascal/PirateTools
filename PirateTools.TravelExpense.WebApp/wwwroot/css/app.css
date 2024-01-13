@@ -17,6 +17,11 @@ a.no-decoration {
     user-select: none;
 }
 
+.pointer {
+    cursor: pointer;
+    user-select: none;
+}
+
 /* AUTO GENERATED */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;

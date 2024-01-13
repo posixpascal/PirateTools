@@ -1,17 +1,9 @@
-using Microsoft.AspNetCore.Components;
 using PirateTools.TravelExpense.WebApp.Models;
-using PirateTools.TravelExpense.WebApp.Services;
 using System;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepFederationDataEntry {
-    [Inject]
-    public required AppDataService AppData { get; set; }
-
-    [Inject]
-    public required NavigationManager NavigationManager { get; set; }
-
     private Guid SelectedFedeationId {
         get => AppData.CurrentReport?.Federation?.Id ?? Guid.Empty;
         set {
@@ -23,11 +15,28 @@ public partial class StepFederationDataEntry {
     }
 
     protected override void OnParametersSet() {
-        if (AppData.CurrentReport == null) {
-            NavigationManager.NavigateTo("");
+        if (AppData.CurrentReport == null)
             return;
+
+        if (AppData.CurrentReport.Federation == null) {
+            if (AppData.CurrentReport.Pirate?.Federation != null) {
+                AppData.CurrentReport.Federation = AppData.CurrentReport.Pirate.Federation;
+            } else {
+                AppData.CurrentReport.Federation = AppData.Federations[0];
+            }
         }
 
         AppData.CurrentStep = WizardStep.FederationDataEntry;
+    }
+
+    private void GoBack() {
+        if (AppData.CurrentReport == null)
+            return;
+
+        if (AppData.CurrentReport.UsedExistingUser) {
+            NavigationManager.NavigateTo("/StepUserSelector");
+        } else {
+            NavigationManager.NavigateTo("/StepUserDataEntry");
+        }
     }
 }

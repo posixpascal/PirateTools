@@ -6,18 +6,7 @@ using PirateTools.Models;
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepNightlyCostTypeSelection {
-    [Inject]
-    public required AppDataService AppData { get; set; }
-
-    [Inject]
-    public required NavigationManager NavigationManager { get; set; }
-
     protected override void OnParametersSet() {
-        if (AppData.CurrentReport == null) {
-            NavigationManager.NavigateTo("");
-            return;
-        }
-
         AppData.CurrentStep = WizardStep.NightlyCostTypeSelection;
     }
 

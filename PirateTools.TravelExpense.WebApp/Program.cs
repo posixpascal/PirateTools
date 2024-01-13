@@ -17,15 +17,15 @@ public static class Program {
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
-        builder.Services.AddSingleton<AppDataService>();
-        builder.Services.AddSingleton(new CultureInfo("de-DE"));
-
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
         builder.Services.AddStorageManagerService();
         builder.Services.AddBlazorDownloadFile();
 
         builder.Services.AddScoped<FontService>();
+
+        builder.Services.AddScoped<AppDataService>();
+        builder.Services.AddSingleton(new CultureInfo("de-DE"));
 
         await builder.Build().RunAsync();
     }

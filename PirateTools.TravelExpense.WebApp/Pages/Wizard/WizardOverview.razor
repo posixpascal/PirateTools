@@ -1,0 +1,199 @@
+﻿@page "/Overview"
+@using PirateTools.Models
+
+@if (AppData.CurrentReport == null) {
+    return;
+}
+
+<h1 class="mb-3">Übersicht</h1>
+
+<div class="d-flex justify-content-end mb-3">
+    <NavLink href="/" class="btn btn-primary">Zur Hauptseite</NavLink>
+</div>
+
+<div class="mb-3">
+    <NavLink href="/StepUserSelection" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Benutzer</h5>
+                <p class="card-text">
+                    Auswählen ob ein existierender Benutzer genutzt werden soll oder die Daten manuell eingegeben werden.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@if (AppData.CurrentReport.UsedExistingUser) {
+    <div class="mb-3">
+        <NavLink href="/StepUserSelector" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Existierenden Benutzer auswählen</h5>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+} else {
+    <div class="mb-3">
+        <NavLink href="/StepUserDataEntry" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Benutzerdaten editieren</h5>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
+<div class="mb-3">
+    <NavLink href="/StepFederationDataEntry" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Verbandsdaten</h5>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+<div class="mb-3">
+    <NavLink href="/StepExpenseBaseDataEntry" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Reise</h5>
+                <p class="card-text">
+                    Grunddaten der Reise.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+<div class="mb-3">
+    <NavLink href="/StepTravelTypeSelection" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Fortbewegungsmittel</h5>
+                <p class="card-text">
+                    Auswahl ob mit einem privaten Fahrzeug gefahren wurde oder der ÖPV genutzt wurde.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@if (AppData.CurrentReport.VehicleUsed.IsPrivateVehicle()) {
+    <div class="mb-3">
+        <NavLink href=@("/StepTravelCostsVehicle/" + (int)AppData.CurrentReport.VehicleUsed) class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Fahrt mit einem privaten @AppData.CurrentReport.VehicleUsed.GetVehicleName()</h5>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+} else if (AppData.CurrentReport.VehicleUsed == Vehicle.PublicTransit) {
+    <div class="mb-3">
+        <NavLink href="/StepTravelCostsPublicTransit" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Fahrt mit dem ÖPV</h5>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
+<div class="mb-3">
+    <NavLink href="/StepNightlyCostTypeSelection" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Übernachtungskosten</h5>
+                <p class="card-text">
+                    Auswählen ob die Übernachtungskosten nach Beleg oder Pauschal abgerechnet werden.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@if (AppData.CurrentReport.AccommodationType == AccommodationType.Specified) {
+    <div class="mb-3">
+        <NavLink href="/StepNightlyCostExact" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Übernachtungskosten</h5>
+                    <p class="card-text">
+                        Angabe der exakten Kosten nach Beleg.
+                    </p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
+<div class="mb-3">
+    <NavLink href="/StepOtherCostsSelection" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Sonstige Kosten</h5>
+                <p class="card-text">
+                    Auswählen ob Sonstige kosten existieren.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@if (AppData.CurrentReport.OtherCosts.Count > 0) {
+    <div class="mb-3">
+        <NavLink href="/StepOtherCostsOverview" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Sonstige Kosten</h5>
+                    <p class="card-text">
+                        Liste der sonstigen Kosten.
+                    </p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
+<div class="mb-3">
+    <NavLink href="/StepDonationSelection" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Spenden</h5>
+                <p class="card-text">
+                    Auswahl welcher Teil gespendet werden soll.
+                </p>
+            </div>
+        </div>
+    </NavLink>
+</div>
+
+@if (!AppData.CurrentReport.IsDonatingAll()) {
+    <div class="mb-3">
+        <NavLink href="/StepBankInformationEntry" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Bankinformationen</h5>
+                    <p class="card-text">
+                        Informationen an welches Konto überwiesen werden soll.
+                    </p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
+<div class="mb-3">
+    <NavLink href="/StepSummary" class="no-decoration">
+        <div class="card box-highlight pointer">
+            <div class="card-body">
+                <h5 class="card-title">Zusammenfassung</h5>
+            </div>
+        </div>
+    </NavLink>
+</div>

@@ -1,7 +1,90 @@
-﻿<PageTitle>Home</PageTitle>
+﻿@page "/"
 
-<h1>Hello, world!</h1>
+@if (Loading) {
+    <h1>Daten werden geladen</h1>
+    return;
+}
 
-Welcome to your new app.
+<h1 class="mb-4">Reisekostentool V0.2</h1>
 
-<button @onclick=TestFillAsync>Test</button>
+<div class="row mb-4">
+    <div class="col">
+        <NavLink href="/Settings" class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Einstellungen</h5>
+                    <p class="card-text">Einstellungen der Web App</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+
+    <div class="col">
+        <NavLink href="/Users/List" class="no-decoration">
+            <div class="card @(AppData.Config.UseLocalStorage ? "box-highlight" : "not-allowed") h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Benutzerverwaltung</h5>
+                    <p class="card-text">Benutzer Anlegen oder Editieren</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+
+    <div class="col">
+        <NavLink @onclick=NewReport class="no-decoration pointer">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Neuer Reisekostenantrag</h5>
+                    <p class="card-text">Einen neuen Reisekostenantrag anlegen</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+</div>
+
+<div class="row">
+    <h2 class="mb-3">Gespeicherte Anträge</h2>
+
+    @if (AppData.Config.UseLocalStorage) {
+        if (AppData.Reports.Count > 0) {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Datum (Start der Reise)</th>
+                        <th scope="col">Zweck</th>
+                        <th scope="col">Person</th>
+                        <th scope="col" class="text-end">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach (var report in AppData.Reports.OrderBy(r => r.DepartureTime)) {
+                        <tr>
+                            <td>@report.StartDate.ToString(Culture)</td>
+                            <td>@report.TravelReason</td>
+                            <td>@report.Pirate?.Name</td>
+                            <td class="text-end">
+                                <a class="pointer" @onclick=@(() => DeleteReport(report))><i class="bi bi-trash-fill text-danger"></i></a>
+                                <a class="pointer" @onclick=@(() => EditReport(report))><i class="bi bi-pencil-fill text-success"></i></a>
+                                <a class="pointer" @onclick=@(() => BuildPdf(report))><i class="bi bi-filetype-pdf text-primary"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        } else {
+            <p>
+                Hier tauchen Anträge auf sobald du einen erstellt hast.
+            </p>
+        }
+    } else {
+        <p>
+            Damit Anträge und Benutzer gespeichert werden können, stimme bitte der Speicherung von Daten im Browser zu.<br />
+            Alle Daten (Benutzer, Anträge) werden dann nur lokal auf deinem Rechner gespeichert.<br />
+            Es gibt keinerlei Datenübertragung an die Server der Piratenpartei - selbst die PDF wird lokal generiert :)<br />
+            Falls du es dir anders überlegt hast oder deine Daten exportieren willst kannst du dies in den Einstellungen machen!
+        </p>
+        <div class="d-flex justify-content-center">
+            <button @onclick=AllowLocalStorageAsync class="btn btn-primary">Lokaler Datenspeicherung zustimmen</button>
+        </div>
+    }
+</div>

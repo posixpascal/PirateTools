@@ -1,37 +1,40 @@
 ﻿using KristofferStrube.Blazor.FileSystem;
 using Microsoft.AspNetCore.Components;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.IO;
 using BlazorDownloadFile;
 using PirateTools.TravelExpense.WebApp.Services;
-using PdfSharpCore.Fonts;
+using System.Globalization;
+using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.PDF;
-using System;
 
 namespace PirateTools.TravelExpense.WebApp.Pages;
 
 public partial class Home {
-    private bool Loading = true;
-
     [Inject]
     public required IStorageManagerService StorageManager { get; set; }
-
     [Inject]
     public required HttpClient Http { get; set; }
-
     [Inject]
     public required IBlazorDownloadFileService DownloadFileService { get; set; }
-
     [Inject]
     public required FontService FontService { get; set; }
+    [Inject]
+    public required AppDataService AppData { get; set; }
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+    [Inject]
+    public required CultureInfo Culture { get; set; }
+
+    private bool Loading = true;
+
+    protected override async Task OnParametersSetAsync() {
+        await AppData.LoadDataAsync();
+        Loading = false;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender) {
-            GlobalFontSettings.FontResolver = new CustomFontResolver(FontService);
-
             await FontService.LoadFontAsync("OpenSans-Regular.ttf");
             await FontService.LoadFontAsync("OpenSans-Bold.ttf");
             await FontService.LoadFontAsync("OpenSans-Italic.ttf");
@@ -39,16 +42,34 @@ public partial class Home {
         }
     }
 
-    private async Task TestFillAsync() {
-        var data = await Http.GetStreamAsync("Resources/TravelExpensePDFs/LVNDS_LO.pdf");
-        var pdf = PdfReader.Open(data);
-        var form = pdf.AcroForm;
+    private async Task AllowLocalStorageAsync() {
+        AppData.Config.UseLocalStorage = true;
+        await AppData.SaveConfigAsync();
+    }
 
-        Console.WriteLine(string.Join(',', form.Fields.Names));
-        form.Fields["Name"].Value = new PdfString("Test", PdfStringEncoding.Unicode);
+    private void NewReport() {
+        AppData.CurrentReport = new();
+        AppData.Reports.Add(AppData.CurrentReport);
 
-        using var memoryStream = new MemoryStream();
-        pdf.Save(memoryStream);
-        await DownloadFileService.DownloadFile("test.pdf", memoryStream, "application/octet-stream");
+        NavigationManager.NavigateTo("/StepUserSelection");
+    }
+
+    private async Task DeleteReport(TravelExpenseReport report) {
+        AppData.Reports.Remove(report);
+        await AppData.SaveReports();
+    }
+
+    private void EditReport(TravelExpenseReport report) {
+        AppData.CurrentReport = report;
+        NavigationManager.NavigateTo("/Overview");
+    }
+
+    private async Task BuildPdf(TravelExpenseReport report) {
+        await FontService.LoadFontAsync("OpenSans-Regular.ttf");
+        await FontService.LoadFontAsync("OpenSans-Bold.ttf");
+        await FontService.LoadFontAsync("OpenSans-Italic.ttf");
+        await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
+
+        await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService);
     }
 }

@@ -1,65 +1,70 @@
 ﻿@page "/StepTravelTypeSelection"
+@layout VerticalCenterLayout
+@inherits WizardComponentBase
 
 @if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
     return;
 }
 
-<div class="row" style="height: 100%; align-items: center;">
+<div class="row mb-4">
+    <h1>Wie bist du gereist?</h1>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <NavLink href="/StepTravelCostsVehicle/2" class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">PKW</h5>
+                    <p class="card-text">Du bist mit einem privaten PKW gefahren.</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+
+    <div class="col">
+        <NavLink href="/StepTravelCostsVehicle/3" class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Motorrad</h5>
+                    <p class="card-text">Du bist mit einem privaten Motorrad gefahren.</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <NavLink href="/StepTravelCostsPublicTransit" class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Öffis</h5>
+                    <p class="card-text">Du hast ein Ticket für Bus, Bahn oder Flugzeug* gekauft.</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+
+    <div class="col">
+        <NavLink @onclick=JumpToNightlyCostsSelection class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Keine Fahrtkosten</h5>
+                    <p class="card-text">Du hast bei dieser Reise keine Fahrtkosten.</p>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink href="StepExpenseBaseDataEntry" class="btn btn-primary">Zurück</NavLink>
+    </div>
     <div>
-        <div class="row mb-4">
-            <h1>Wie bist du gereist?</h1>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col">
-                <NavLink href="/StepTravelCostsVehicle/2" class="no-decoration">
-                    <div class="card box-highlight h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">PKW</h5>
-                            <p class="card-text">Du bist mit einem privaten PKW gefahren.</p>
-                        </div>
-                    </div>
-                </NavLink>
-            </div>
-
-            <div class="col">
-                <NavLink href="/StepTravelCostsVehicle/3" class="no-decoration">
-                    <div class="card box-highlight h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Motorrad</h5>
-                            <p class="card-text">Du bist mit einem privaten Motorrad gefahren.</p>
-                        </div>
-                    </div>
-                </NavLink>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col">
-                <NavLink href="/StepTravelCostsPublicTransit" class="no-decoration">
-                    <div class="card box-highlight h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Öffis</h5>
-                            <p class="card-text">Du hast ein Ticket für Bus, Bahn oder Flugzeug* gekauft.</p>
-                        </div>
-                    </div>
-                </NavLink>
-            </div>
-
-            <div class="col">
-                <NavLink @onclick=JumpToNightlyCostsSelection class="no-decoration">
-                    <div class="card box-highlight h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Keine Fahrtkosten</h5>
-                            <p class="card-text">Du hast bei dieser Reise keine Fahrtkosten.</p>
-                        </div>
-                    </div>
-                </NavLink>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <NavLink href="StepExpenseBaseDataEntry" class="btn btn-primary">Zurück</NavLink>
-        </div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
     </div>
 </div>

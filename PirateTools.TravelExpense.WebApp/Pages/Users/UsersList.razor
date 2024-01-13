@@ -1,0 +1,33 @@
+﻿@page "/Users/List"
+
+<div class="d-flex justify-content-between mb-3">
+    <h1>Benutzer</h1>
+
+    <a class="btn btn-success align-self-center" @onclick=AddNew><i class="bi bi-person-plus-fill"></i></a>
+</div>
+
+<table class="table table-striped mb-4">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Verband</th>
+            <th scope="col" class="text-end">Aktionen</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @foreach (var user in AppData.Config.Users) {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Federation?.FullName()</td>
+                <td class="text-end">
+                    <a class="pointer" @onclick=@(() => DeleteUser(user))><i class="bi bi-trash-fill text-danger"></i></a>
+                    <a class="pointer" @onclick=@(() => EditUser(user))><i class="bi bi-pencil-fill text-success"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between">
+    <NavLink href="/" class="btn btn-primary">Zurück</NavLink>
+</div>

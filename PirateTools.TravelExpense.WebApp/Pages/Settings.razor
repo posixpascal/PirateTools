@@ -1,0 +1,19 @@
+﻿@page "/Settings"
+
+<h1>Einstellungen</h1>
+
+@if (AppData.Config.UseLocalStorage) {
+    <div class="d-flex justify-content-between mb-3">
+        <div class="align-self-center">Die Speicherung von Daten im Browser ist aktiviert.</div>
+        <button class="btn btn-danger" @onclick=KillData>Deaktivieren und alle Daten löschen</button>
+    </div>
+} else {
+    <div class="d-flex justify-content-between mb-3">
+        <div class="align-self-center">Es werden aktuell keine Daten im Browser gespeichert.</div>
+        <button class="btn btn-primary" @onclick=AllowDataStorage>Lokaler Datenspeicherung zustimmen</button>
+    </div>
+}
+
+<div class="d-flex justify-content-between">
+    <NavLink href="" class="btn btn-primary">Zurück</NavLink>
+</div>

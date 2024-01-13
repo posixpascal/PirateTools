@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Resources\Fonts\" />
+    <Folder Include="wwwroot\Resources\IconFonts\" />
   </ItemGroup>
 
 </Project>

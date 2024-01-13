@@ -1,31 +1,42 @@
-﻿@page "/"
+﻿@page "/StepUserSelection"
+@layout VerticalCenterLayout
+@inherits WizardComponentBase
 
-<div class="row" style="height: 100%; align-items: center;">
-    <div style="padding-bottom: 10em;">
-        <div class="row" style="margin-bottom: 2em; justify-items: center;">
-            <h1>Wähle einen Benutzer</h1>
-        </div>
+<div class="row" style="margin-bottom: 2em; justify-items: center;">
+    <h1>Wähle einen Benutzer</h1>
+</div>
 
-        <div class="row">
-            <div class="col">
-                <div class="card not-allowed h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Existierenden Benutzer</h5>
-                        <p class="card-text">Dieses Feature existiert noch nicht D:</p>
-                    </div>
+<div class="row mb-3">
+    <div class="col">
+        <NavLink href="/StepUserSelector" class="no-decoration">
+            <div class="card @(AppData.Config.Users.Count > 0 ? "box-highlight" : "not-allowed") h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Existierenden Benutzer</h5>
+                    <p class="card-text">Wähle aus einen deiner angelegten Benutzer aus</p>
                 </div>
             </div>
+        </NavLink>
+    </div>
 
-            <div class="col">
-                <NavLink href="StepUserDataEntry" class="no-decoration">
-                    <div class="card box-highlight h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Manuell Eingeben</h5>
-                            <p class="card-text">Benutzerdaten manuell im nächsten Schritt eintragen</p>
-                        </div>
-                    </div>
-                </NavLink>
+    <div class="col">
+        <NavLink href="/StepUserDataEntry" class="no-decoration">
+            <div class="card box-highlight h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Manuell Eingeben</h5>
+                    <p class="card-text">Benutzerdaten manuell im nächsten Schritt eintragen</p>
+                </div>
             </div>
-        </div>
+        </NavLink>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink href="/" class="btn btn-primary">Zurück</NavLink>
+    </div>
+    <div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
     </div>
 </div>

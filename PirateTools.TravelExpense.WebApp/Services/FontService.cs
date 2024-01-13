@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PdfSharpCore.Fonts;
+using PirateTools.TravelExpense.WebApp.PDF;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -13,7 +15,8 @@ public class FontService {
 
 	public FontService(HttpClient http) {
 		Http = http;
-	}
+        GlobalFontSettings.FontResolver = new CustomFontResolver(this);
+    }
 
 	public byte[] GetFontData(string fontName) {
 		if (!FontCahce.TryGetValue(fontName, out var data)) {

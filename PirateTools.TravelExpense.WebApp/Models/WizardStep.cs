@@ -2,8 +2,9 @@
 
 public enum WizardStep {
     None,
-    UserSelection,
-    UserDataEntry,
+    UserSelection, // Use existing user or create one for this report
+    UserSelector, // Select existing
+    UserDataEntry, // Create new
     FederationDataEntry,
     ExpenseBaseDataEntry, // Reason, Resolution, Dates, Times, Location
     TravelTypeSelection, // Car, Motorbike, Public Transit

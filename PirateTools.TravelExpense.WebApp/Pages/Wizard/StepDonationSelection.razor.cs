@@ -7,20 +7,9 @@ namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepDonationSelection {
     [Inject]
-    public required AppDataService AppData { get; set; }
-
-    [Inject]
-    public required NavigationManager NavigationManager { get; set; }
-
-    [Inject]
     public required CultureInfo Culture { get; set; }
 
     protected override void OnParametersSet() {
-        if (AppData.CurrentReport == null) {
-            NavigationManager.NavigateTo("");
-            return;
-        }
-
         AppData.CurrentStep = WizardStep.DonationSelection;
     }
 

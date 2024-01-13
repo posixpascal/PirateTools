@@ -1,0 +1,30 @@
+﻿@page "/StepUserSelector"
+@inherits WizardComponentBase
+
+<h1 class="mb-3">Wähle einen Benutzer</h1>
+
+@foreach (var user in AppData.Config.Users) {
+    var u = user;
+
+    <div class="mb-3">
+        <a @onclick=@(() => UseUser(u))>
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">@user.Name</h5>
+                    <p class="card-text">Verband: @(user.Federation?.FullName())</p>
+                </div>
+            </div>
+        </a>
+    </div>
+}
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink href="/StepUserSelection" class="btn btn-primary">Zurück</NavLink>
+    </div>
+    <div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
+    </div>
+</div>

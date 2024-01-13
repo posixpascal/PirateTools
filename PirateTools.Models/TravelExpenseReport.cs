@@ -9,6 +9,8 @@ namespace PirateTools.Models;
 public class TravelExpenseReport {
     public Guid Id { get; set; } = Guid.NewGuid();
 
+    public bool UsedExistingUser { get; set; }
+
     public Pirate? Pirate { get; set; }
     public Federation? Federation { get; set; }
 

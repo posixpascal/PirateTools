@@ -1,73 +1,78 @@
 ﻿@page "/StepExpenseBaseDataEntry"
+@layout VerticalCenterLayout
+@inherits WizardComponentBase
 
 @if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
     return;
 }
 
-<div class="row" style="height: 100%; align-items: center;">
+<h1>Reise</h1>
+
+<div class="mb-3">
+    <label class="form-label">Zweck der Reise (Kurze Beschreibung warum/wofür du gereist bist)</label>
+    <input class="form-control" @bind=AppData.CurrentReport.TravelReason />
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Ziel</label>
+    <input class="form-control" @bind=AppData.CurrentReport.Destination />
+</div>
+
+<div class="row">
+    <div class="col-9">
+        <div class="mb-3">
+            <label class="form-label">Beschluss-Nr. (Manche Reisen brauchen zwingend einen Beschluss!)</label>
+            <input class="form-control" @bind=AppData.CurrentReport.ResolutionID />
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="mb-3">
+            <label class="form-label">Datum des Beschluss</label>
+            <input class="form-control" type="date" @bind=AppData.CurrentReport.ResolutionDate />
+        </div>
+    </div>
+</div>
+
+<h1>Zeiten</h1>
+
+<div class="row">
+    <div class="col-6">
+        <div class="mb-3">
+            <label class="form-label">Abreisedatum</label>
+            <input class="form-control" type="date" @bind=AppData.CurrentReport.StartDate />
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="mb-3">
+            <label class="form-label">Ankunftsdatum</label>
+            <input class="form-control" type="date" @bind=AppData.CurrentReport.EndDate />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <div class="mb-3">
+            <label class="form-label">Abreisezeit</label>
+            <input class="form-control" type="time" @bind=AppData.CurrentReport.DepartureTime />
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="mb-3">
+            <label class="form-label">Ankunftszeit</label>
+            <input class="form-control" type="time" @bind=AppData.CurrentReport.ArrivalTime />
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink href="StepFederationDataEntry" class="btn btn-primary">Zurück</NavLink>
+    </div>
     <div>
-        <h1>Reise</h1>
-
-        <div class="mb-3">
-            <label class="form-label">Zweck der Reise (Kurze Beschreibung warum/wofür du gereist bist)</label>
-            <input class="form-control" @bind=AppData.CurrentReport.TravelReason />
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Ziel</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Destination />
-        </div>
-
-        <div class="row">
-            <div class="col-9">
-                <div class="mb-3">
-                    <label class="form-label">Beschluss-Nr. (Manche Reisen brauchen zwingend einen Beschluss!)</label>
-                    <input class="form-control" @bind=AppData.CurrentReport.ResolutionID />
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="mb-3">
-                    <label class="form-label">Datum des Beschluss</label>
-                    <input class="form-control" type="date" @bind=AppData.CurrentReport.ResolutionDate />
-                </div>
-            </div>
-        </div>
-
-        <h1>Zeiten</h1>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="mb-3">
-                    <label class="form-label">Abreisedatum</label>
-                    <input class="form-control" type="date" @bind=AppData.CurrentReport.StartDate />
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="mb-3">
-                    <label class="form-label">Ankunftsdatum</label>
-                    <input class="form-control" type="date" @bind=AppData.CurrentReport.EndDate />
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-6">
-                <div class="mb-3">
-                    <label class="form-label">Abreisezeit</label>
-                    <input class="form-control" type="time" @bind=AppData.CurrentReport.DepartureTime />
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="mb-3">
-                    <label class="form-label">Ankunftszeit</label>
-                    <input class="form-control" type="time" @bind=AppData.CurrentReport.ArrivalTime />
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <NavLink href="StepFederationDataEntry" class="btn btn-primary">Zurück</NavLink>
-            <NavLink href="StepTravelTypeSelection" class="btn btn-primary">Weiter</NavLink>
-        </div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
+        <NavLink href="StepTravelTypeSelection" class="btn btn-primary">Weiter</NavLink>
     </div>
 </div>

@@ -1,29 +1,34 @@
 ﻿@page "/StepFederationDataEntry"
+@layout VerticalCenterLayout
+@inherits WizardComponentBase
 
 @if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
     return;
 }
 
-<div class="row" style="height: 100%; align-items: center;">
+<h1>Verband</h1>
+
+<div class="mb-3">
+    <label class="form-label">Verband (Für welchen Verband bist du gereist)</label>
+    <select class="form-select" @bind=SelectedFedeationId>
+        @foreach (var federation in AppData.Federations) {
+            <option value=@federation.Id>@federation.FullName()</option>
+        }
+    </select>
+</div>
+<div class="mb-3">
+    <label class="form-label">Funktion (Vorstand, Beauftragt, etc.)</label>
+    <input class="form-control" @bind=AppData.CurrentReport.Function />
+</div>
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink @onclick=GoBack class="btn btn-primary">Zurück</NavLink>
+    </div>
     <div>
-        <h1>Verband</h1>
-
-        <div class="mb-3">
-            <label class="form-label">Verband (Für welchen Verband bist du gereist)</label>
-            <select class="form-select" @bind=SelectedFedeationId>
-                @foreach (var federation in AppData.Federations) {
-                    <option value=@federation.Id>@federation.FullName()</option>
-                }
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Funktion (Vorstand, Beauftragt, etc.)</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Function />
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <NavLink href="StepUserDataEntry" class="btn btn-primary">Zurück</NavLink>
-            <NavLink href="StepExpenseBaseDataEntry" class="btn btn-primary">Weiter</NavLink>
-        </div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
+        <NavLink href="StepExpenseBaseDataEntry" class="btn btn-primary">Weiter</NavLink>
     </div>
 </div>

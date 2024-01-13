@@ -143,6 +143,16 @@ public class TravelExpenseReport {
         return (VehicleUsed == Vehicle.Car ? 0.3 : 0.13) * DrivenKm;
     }
 
+    public double GetVehicleOrPublicTransitCosts() {
+        if (VehicleUsed == Vehicle.PublicTransit)
+            return PublicTransitCosts;
+
+        if (VehicleUsed == Vehicle.Undefined)
+            return 0;
+
+        return CalculateDrivenCompensation();
+    }
+
     public string GenerateFileName(CultureInfo culture) {
         string fileName;
         if (Pirate == null || string.IsNullOrEmpty(Destination)) {

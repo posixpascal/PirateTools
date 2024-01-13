@@ -1,4 +1,5 @@
 ﻿@page "/StepSummary"
+@using PirateTools.Models
 @layout VerticalCenterLayout
 @inherits WizardComponentBase
 
@@ -6,7 +7,239 @@
     return;
 }
 
-<h1>Zusammenfassung</h1>
+<h1 class="mb-3">Zusammenfassung</h1>
+
+<hr />
+
+<div class="row mb-3">
+    <h5>Information zur Person</h5>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Gereiste Person:</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.Pirate?.Name</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Verband:</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.Pirate?.Federation?.FullName()</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Straße & Hausnummer:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.Pirate?.Address?.LocalIdentifier
+                    @AppData.CurrentReport.Pirate?.Address?.HouseIdentifier
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Plz & Ort:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.Pirate?.Address?.PostCode
+                    @AppData.CurrentReport.Pirate?.Address?.City
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row mb-3">
+    <h5>Informationen zur Reise</h5>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Zweck:</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.TravelReason</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Verband (Für den gereist wurde):</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.Federation?.FullName()</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Ziel:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.Destination
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p class="mb-0">Start:</p>
+            </div>
+            <div class="col-6">
+                <p class="mb-0">
+                    @AppData.CurrentReport.StartDate.ToString(Culture)
+                    (@AppData.CurrentReport.DepartureTime.ToString(Culture))
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Ende:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.EndDate.ToString(Culture)
+                    (@AppData.CurrentReport.ArrivalTime.ToString(Culture))
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row mb-3">
+    <h5>Kosten</h5>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Genutztes Fahrzeug:</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.VehicleUsed.GetVehicleName()</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Fahrtkosten:</p>
+            </div>
+            <div class="col-6">
+                <p>@AppData.CurrentReport.GetVehicleOrPublicTransitCosts().ToString("C2", Culture)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p>Übernachtung:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.AccommodationType.GetAccommodationTypeName()
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Übernachtungskosten:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.CalculatedAccommodationCosts.ToString("C2", Culture)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <p class="mb-1">Verpflegungspauschale:</p>
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-6">
+                <p class="mb-0">An/Abreisetage:</p>
+            </div>
+            <div class="col-6">
+                <p class="mb-0">
+                    @AppData.CurrentReport.ShortDaysCompensation.ToString("C2", Culture)
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Volle Tage:</p>
+            </div>
+            <div class="col-6">
+                <p>
+                    @AppData.CurrentReport.FullDaysCompensation.ToString("C2", Culture)
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+@if (AppData.CurrentReport.OtherCosts.Count > 0) {
+    <div class="row">
+        <h5>Sonstige Kosten</h5>
+
+        @foreach (var entry in AppData.CurrentReport.OtherCosts) {
+            <div class="col-9">
+                <p class="mb-1">@entry.Text</p>
+            </div>
+            <div class="col-3">
+                <p class="mb-1">@entry.Cost.ToString("C2", Culture)</p>
+            </div>
+        }
+
+        <div class="col-9">
+            <p class="mb-1">Sonstige Kosten gesamt:</p>
+        </div>
+        <div class="col-3">
+            <p class="mb-1">@AppData.CurrentReport.OtherCosts.Sum(c => c.Cost).ToString("C2", Culture)</p>
+        </div>
+    </div>
+
+    <hr />
+}
+
+<div class="row mb-3">
+    <h5>Spenden</h5>
+
+    @if (AppData.CurrentReport.IsDonatingAll()) {
+        <p>Es werden die vollen @AppData.CurrentReport.TotalCosts.ToString("C2", Culture) gespendet.</p>
+    } else if (AppData.CurrentReport.CalculateDonateAmount() == 0) {
+        <p>
+            Es sind insgesamt Kosten in Höhe von @AppData.CurrentReport.TotalCosts.ToString("C2", Culture) entstanden.<br />
+            Die vollen kosten werden dir überwiesen, sobald du deinen Antrag eingereicht hast und er freigegeben wurde.
+        </p>
+    } else {
+        <p>
+            Es sind insgesamt Kosten in Höhe von @AppData.CurrentReport.TotalCosts.ToString("C2", Culture) entstanden.<br />
+            Davon werden @AppData.CurrentReport.DonateAmountCustom.ToString("C2", Culture) gespendet und
+            @((AppData.CurrentReport.TotalCosts - AppData.CurrentReport.CalculateDonateAmount()).ToString("C2", Culture))
+            dir überwiesen, sobald du deinen Antrag eingereicht hast und er freigegeben wurde.
+        </p>
+    }
+</div>
+
+<hr />
 
 <div class="mb-3">
     <label class="form-label">Anzahl der Anlagen</label>

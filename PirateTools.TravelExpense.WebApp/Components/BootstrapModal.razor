@@ -1,0 +1,21 @@
+﻿<div class="modal show d-flex flex-column justify-content-center" tabindex="-1"
+     style="background-color: rgba(0, 0, 0, 0.3);">
+    <div class="modal-dialog" style="min-width: 33%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+                @if (ShowCloseX) {
+                    <button type="button" class="btn-close" @onclick=CloseX></button>
+                }
+            </div>
+            <div class="modal-body">
+                @Body
+            </div>
+            @if (Footer != null) {
+                <div class="modal-footer">
+                    @Footer
+                </div>
+            }
+        </div>
+    </div>
+</div>

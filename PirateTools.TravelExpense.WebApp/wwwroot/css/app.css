@@ -22,6 +22,26 @@ a.no-decoration {
     user-select: none;
 }
 
+/* Spinner */
+.spinner {
+    border: 16px solid var(--bs-secondary-color); /* Color of full circle */
+    border-top: 16px solid var(--bs-primary); /* Color of partial circle */
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 /* AUTO GENERATED */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;

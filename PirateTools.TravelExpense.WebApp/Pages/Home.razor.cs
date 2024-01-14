@@ -7,6 +7,10 @@ using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.PDF;
+using Blazored.Modal.Services;
+using PirateTools.TravelExpense.WebApp.Components;
+using Blazored.Modal;
+using PirateTools.TravelExpense.WebApp.Components.Modals;
 
 namespace PirateTools.TravelExpense.WebApp.Pages;
 
@@ -25,11 +29,16 @@ public partial class Home {
     public required NavigationManager NavigationManager { get; set; }
     [Inject]
     public required CultureInfo Culture { get; set; }
+    [Inject]
+    public required IModalService ModalService { get; set; }
 
     private bool Loading = true;
 
     protected override async Task OnParametersSetAsync() {
+        var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
+            .Add(nameof(SpinnerModal.Title), "Lädt"));
         await AppData.LoadDataAsync();
+        modal.Close();
         Loading = false;
     }
 
@@ -65,11 +74,14 @@ public partial class Home {
     }
 
     private async Task BuildPdf(TravelExpenseReport report) {
+        var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
+            .Add(nameof(SpinnerModal.Title), "PDF wird erstellt"));
         await FontService.LoadFontAsync("OpenSans-Regular.ttf");
         await FontService.LoadFontAsync("OpenSans-Bold.ttf");
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
         await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService, StorageManager);
+        modal.Close();
     }
 }

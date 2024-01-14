@@ -8,6 +8,7 @@ using KristofferStrube.Blazor.FileSystem;
 using BlazorDownloadFile;
 using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
+using Blazored.Modal;
 
 namespace PirateTools.TravelExpense.WebApp;
 
@@ -21,6 +22,7 @@ public static class Program {
 
         builder.Services.AddStorageManagerService();
         builder.Services.AddBlazorDownloadFile();
+        builder.Services.AddBlazoredModal();
 
         builder.Services.AddScoped<FontService>();
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using PirateTools.TravelExpense.WebApp.Services;
+using System.Threading.Tasks;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
@@ -9,8 +10,12 @@ public partial class WizardOverview {
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
 
-    protected override void OnParametersSet() {
-        if (AppData.CurrentReport == null)
-            NavigationManager.NavigateTo("/");
+    protected override async Task OnParametersSetAsync() {
+        if (AppData.CurrentReport == null) {
+            NavigationManager.NavigateTo("");
+            return;
+        }
+
+        await AppData.SaveReports();
     }
 }

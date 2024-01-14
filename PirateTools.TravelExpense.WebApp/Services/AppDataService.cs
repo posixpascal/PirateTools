@@ -116,7 +116,12 @@ public class AppDataService {
             return;
 
         await OpfsHandle.RemoveEntryAsync("config.json");
-        await OpfsHandle.RemoveEntryAsync("reports.json");
+
+        if (await OpfsHandle.FileExists("reports.json"))
+            await OpfsHandle.RemoveEntryAsync("reports.json");
+
+        if (await OpfsHandle.FileExists("images"))
+            await OpfsHandle.RemoveEntryAsync("images");
 
         Config = new();
         Reports.Clear();

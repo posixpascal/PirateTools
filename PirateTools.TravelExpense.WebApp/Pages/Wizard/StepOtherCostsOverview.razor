@@ -15,17 +15,47 @@
     var entry = AppData.CurrentReport.OtherCosts[i];
     var j = i;
 
-    <div class="row mb-3">
-        <div class="col-8">
-            <label class="form-label">Beschreibung</label>
-            <input class="form-control" @bind=entry.Text />
+    <div class="card mb-3 px-2 pt-1">
+        <div class="row mb-1">
+            <div class="col-8">
+                <label class="form-label">Beschreibung</label>
+                <input class="form-control" @bind=entry.Text />
+            </div>
+            <div class="col-3">
+                <label class="form-label">Betrag</label>
+                <input class="form-control" type="number" min="0" @bind=entry.Cost />
+            </div>
+            <div class="col-1 d-flex flex-column justify-content-end">
+                <button class="btn btn-danger" @onclick=@(() => Delete(j))>X</button>
+            </div>
         </div>
-        <div class="col-3">
-            <label class="form-label">Betrag</label>
-            <input class="form-control" type="number" min="0" @bind=entry.Cost />
-        </div>
-        <div class="col-1 d-flex flex-column justify-content-end">
-            <button class="btn btn-danger" @onclick=@(() => Delete(j))>X</button>
+
+        <div class="row mb-3">
+            <div class="col-5">
+                <p class="mb-0">Bild des Beleg hochladen</p>
+
+                @if (AppData.Config.UseLocalStorage) {
+                    if (SavingImage) {
+                        <p>Bild wird gespeichert ...</p>
+                    } else if (entry.ImageReceipt == null) {
+                        <p>Kein Bild ausgewählt</p>
+                    } else {
+                        <p>Ausgewähltes Bild: @entry.ImageReceipt</p>
+                    }
+                }
+            </div>
+
+            @if (AppData.Config.UseLocalStorage) {
+                <div class="col-7">
+                    <p class="mb-1">Neues Bild auswählen (Maximal 4 Mb)</p>
+                    <InputFile OnChange=@(e => OnFileChanged(entry, e)) />
+                </div>
+            } else {
+                <div class="col-7">
+                    <p>Um dieses feature nutzen zu können, erlaube bitte die Speicherung von Daten in deinem Browser.</p>
+                    <button @onclick=AllowLocalStorage class="btn btn-primary">Erlauben</button>
+                </div>
+            }
         </div>
     </div>
 }

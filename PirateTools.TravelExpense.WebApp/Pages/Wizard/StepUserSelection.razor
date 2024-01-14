@@ -8,14 +8,14 @@
 
 <div class="row mb-3">
     <div class="col">
-        <NavLink href="/StepUserSelector" class="no-decoration">
+        <a @onclick=GoToUserSelector class="no-decoration">
             <div class="card @(AppData.Config.Users.Count > 0 ? "box-highlight" : "not-allowed") h-100">
                 <div class="card-body">
                     <h5 class="card-title">Existierenden Benutzer</h5>
                     <p class="card-text">Wähle aus einen deiner angelegten Benutzer aus</p>
                 </div>
             </div>
-        </NavLink>
+        </a>
     </div>
 
     <div class="col">

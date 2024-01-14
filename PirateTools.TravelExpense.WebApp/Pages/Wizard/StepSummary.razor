@@ -232,7 +232,7 @@
     } else {
         <p>
             Es sind insgesamt Kosten in Höhe von @AppData.CurrentReport.TotalCosts.ToString("C2", Culture) entstanden.<br />
-            Davon werden @AppData.CurrentReport.DonateAmountCustom.ToString("C2", Culture) gespendet und
+            Davon werden @AppData.CurrentReport.CalculateDonateAmount().ToString("C2", Culture) gespendet und
             @((AppData.CurrentReport.TotalCosts - AppData.CurrentReport.CalculateDonateAmount()).ToString("C2", Culture))
             dir überwiesen, sobald du deinen Antrag eingereicht hast und er freigegeben wurde.
         </p>
@@ -242,7 +242,7 @@
 <hr />
 
 <div class="mb-3">
-    <label class="form-label">Anzahl der Anlagen</label>
+    <label class="form-label">Anzahl der zusätzlichen Anlagen (Anlagen durch hoch geladenen Bilder werden separat gezählt)</label>
     <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.AttachmentCount />
 </div>
 

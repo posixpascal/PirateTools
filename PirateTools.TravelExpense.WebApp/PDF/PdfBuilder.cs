@@ -1,9 +1,12 @@
 ﻿using BlazorDownloadFile;
+using KristofferStrube.Blazor.FileSystem;
+using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.AcroForms;
 using PdfSharpCore.Pdf.IO;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Services;
+using PirateTools.TravelExpense.WebApp.Utility;
 using System;
 using System.Globalization;
 using System.IO;
@@ -14,7 +17,8 @@ namespace PirateTools.TravelExpense.WebApp.PDF;
 
 public static class PdfBuilder {
     public static async Task BuildPdfAsync(TravelExpenseReport report, FontService FontService,
-        HttpClient Http, CultureInfo Culture, IBlazorDownloadFileService DownloadFileService) {
+        HttpClient Http, CultureInfo Culture, IBlazorDownloadFileService DownloadFileService,
+        IStorageManagerService StorageManager) {
         await FontService.LoadFontAsync("OpenSans-Regular.ttf");
         await FontService.LoadFontAsync("OpenSans-Bold.ttf");
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
@@ -85,15 +89,97 @@ public static class PdfBuilder {
         SetField(form, "Spendenanteil", report.CalculateDonateAmount().ToString("N2", Culture));
         SetField(form, "Auszahlbetrag", (report.TotalCosts - report.CalculateDonateAmount()).ToString("N2", Culture));
 
-        SetField(form, "AnzahlAnlagen", report.AttachmentCount.ToString());
         SetField(form, "UnterschriftDatum", report.CreationDateTime.ToString(Culture));
+
+        pdf.Pages.RemoveAt(1);
+        var actualAttachmentCount = report.AttachmentCount;
+
+        if (report.VehicleUsed.IsPrivateVehicle() && report.ImageMapRoute != null) {
+            actualAttachmentCount++;
+            await AddAttachment(pdf, report.ImageMapRoute, StorageManager,
+                $"Anlage #{actualAttachmentCount}: Route für die Fahrt mit einem privaten Fahrzeug");
+        }
+
+        if (report.VehicleUsed == Vehicle.PublicTransit && report.ImagePublicTransitReceipt != null) {
+            actualAttachmentCount++;
+            await AddAttachment(pdf, report.ImagePublicTransitReceipt, StorageManager,
+                $"Anlage #{actualAttachmentCount}: Beleg für das ÖPV Ticket");
+        }
+
+        foreach (var entry in report.OtherCosts) {
+            if (entry.ImageReceipt == null)
+                continue;
+
+            actualAttachmentCount++;
+            await AddAttachment(pdf, entry.ImageReceipt, StorageManager,
+                $"Anlage #{actualAttachmentCount}: Beleg für Sonstige Kosten \"{entry.Text}\"");
+        }
+
+        SetField(form, "AnzahlAnlagen", actualAttachmentCount.ToString());
+
+        SetAllFieldsReadOnly(form);
 
         await using var memoryStream = new MemoryStream();
         pdf.Save(memoryStream);
         await DownloadFileService.DownloadFile(report.GenerateFileName(Culture), memoryStream, "application/octet-stream");
     }
 
+    private static void SetAllFieldsReadOnly(PdfAcroForm form) {
+        foreach (var fieldName in form.Fields.Names) {
+            form.Fields[fieldName].ReadOnly = true;
+        }
+    }
+
     private static void SetField(PdfAcroForm form, string field, string value) {
         form.Fields[field].Value = new PdfString(value, PdfStringEncoding.Unicode);
+    }
+
+    private static async Task AddAttachment(PdfDocument pdf, string filename,
+        IStorageManagerService storageManager, string reason) {
+        var opfsHandle = await storageManager.GetOriginPrivateDirectoryAsync();
+        if (!await opfsHandle.FileExists("images"))
+            return;
+
+        var imagesDirHandle = await opfsHandle.GetDirectoryHandleAsync("images");
+        if (!await imagesDirHandle.FileExists(filename))
+            return;
+
+        var fileStream = await imagesDirHandle.LoadFile(filename);
+        var attachmentPage = pdf.AddPage();
+
+        // Copy the image into a MemoryStream - this Copy MUST run async because JS doesn't support sync copies
+        await using var memStream = new MemoryStream();
+        await fileStream.CopyToAsync(memStream);
+
+        // But guess what, PDFSharp doesn't want to load an XImage from a MemoryStream if it was copied into it
+        var data = memStream.ToArray();
+        await using var newStream = new MemoryStream(data);
+
+        // Finally, Image!
+        var gfx = XGraphics.FromPdfPage(attachmentPage);
+        var image = XImage.FromStream(() => newStream);
+        PlaceImage(gfx, attachmentPage, image);
+
+        // And some text ... that's the easy part
+        var font = new XFont("OpenSans", 16);
+        gfx.DrawString(reason, font, XBrushes.Black, 10, 10, XStringFormats.TopLeft);
+        gfx.DrawString(filename, font, XBrushes.Black, 10, 30, XStringFormats.TopLeft);
+    }
+
+    private static void PlaceImage(XGraphics gfx, PdfPage page, XImage image) {
+        const double A4Height = 842 - 80;
+        const double A4Width = 595 - 20;
+
+        page.Size = PdfSharpCore.PageSize.A4;
+        double scale;
+
+        if (image.PixelWidth > image.PixelHeight && image.PixelWidth > A4Width) {
+            page.Orientation = PdfSharpCore.PageOrientation.Landscape;
+            scale = Math.Max(1, image.PixelWidth / A4Height);
+        } else {
+            scale = Math.Max(1, image.PixelHeight / A4Height);
+        }
+
+        gfx.DrawImage(image, 10, 60, image.PixelWidth / scale, image.PixelHeight / scale);
     }
 }

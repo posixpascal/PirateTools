@@ -49,6 +49,6 @@ public partial class StepSummary {
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService);
+        await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService, StorageManager);
     }
 }

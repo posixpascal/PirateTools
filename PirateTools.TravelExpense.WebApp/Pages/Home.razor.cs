@@ -70,6 +70,6 @@ public partial class Home {
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService);
+        await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService, StorageManager);
     }
 }

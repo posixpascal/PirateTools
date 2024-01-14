@@ -54,12 +54,17 @@ public class TravelExpenseReport {
     public double PublicTransitCosts { get; set; }
     public double DrivenKm { get; set; }
 
+    public string? ImagePublicTransitReceipt { get; set; }
+    public string? ImageMapRoute { get; set; }
+
     [JsonIgnore]
     public double DrivenCompensation => CalculateDrivenCompensation();
 
     public AccommodationType AccommodationType { get; set; }
 
     public double AccommodationCosts { get; set; }
+
+    public string? ImageAccommodationReceipt { get; set; }
 
     [JsonIgnore]
     public double NightsStayedCompensation => AccommodationType == AccommodationType.FlatRate ? (NightsStayed * 20d) : 0;
@@ -168,5 +173,6 @@ public class TravelExpenseReport {
         public string Text { get; set; } = "";
         public double Cost { get; set; }
         public bool Donate { get; set; }
+        public string? ImageReceipt { get; set; }
     }
 }

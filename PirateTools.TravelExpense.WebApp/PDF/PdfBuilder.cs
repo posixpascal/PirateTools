@@ -4,9 +4,11 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.AcroForms;
 using PdfSharpCore.Pdf.IO;
+using PdfSharpCore.Utils;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Services;
 using PirateTools.TravelExpense.WebApp.Utility;
+using SixLabors.ImageSharp;
 using System;
 using System.Globalization;
 using System.IO;
@@ -16,6 +18,8 @@ using System.Threading.Tasks;
 namespace PirateTools.TravelExpense.WebApp.PDF;
 
 public static class PdfBuilder {
+    private static readonly byte[] AttachmentBuffer = new byte[5_000_000];
+
     public static async Task BuildPdfAsync(TravelExpenseReport report, FontService FontService,
         HttpClient Http, CultureInfo Culture, IBlazorDownloadFileService DownloadFileService,
         IStorageManagerService StorageManager) {
@@ -144,12 +148,15 @@ public static class PdfBuilder {
         if (!await imagesDirHandle.FileExists(filename))
             return;
 
-        var fileStream = await imagesDirHandle.LoadFile(filename);
         var attachmentPage = pdf.AddPage();
+        var fileStream = await imagesDirHandle.LoadFile(filename);
 
         // Copy the image into a MemoryStream - this Copy MUST run async because JS doesn't support sync copies
         await using var memStream = new MemoryStream();
-        await fileStream.CopyToAsync(memStream);
+
+        var bytesRead = 0;
+        while ((bytesRead = await fileStream.ReadAsync(AttachmentBuffer)) > 0)
+            memStream.Write(AttachmentBuffer, 0, bytesRead);
 
         // But guess what, PDFSharp doesn't want to load an XImage from a MemoryStream if it was copied into it
         var data = memStream.ToArray();

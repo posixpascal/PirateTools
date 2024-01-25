@@ -1,4 +1,5 @@
 ﻿using KristofferStrube.Blazor.FileSystem;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -20,12 +21,15 @@ public static class FileSystemDirectoryHandleExtensions {
     }
 
     public static async Task StoreFile(this FileSystemDirectoryHandle handle, string filename, Stream s) {
-        if (await handle.FileExists(filename))
+        if (await handle.FileExists(filename)) {
+            Console.WriteLine("Deleting " + filename);
             await handle.RemoveEntryAsync(filename);
+        }
 
         var fileHandle = await handle.GetFileHandleAsync(filename, StorageUtility.DefaultFileOptions);
         var writeStream = await fileHandle.CreateWritableAsync();
         await s.CopyToAsync(writeStream);
+        await writeStream.CloseAsync();
     }
 
     public static async Task<Stream> LoadFile(this FileSystemDirectoryHandle handle, string filename) {

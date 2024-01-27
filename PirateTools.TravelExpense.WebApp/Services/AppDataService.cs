@@ -127,8 +127,15 @@ public class AppDataService {
         if (await OpfsHandle.FileExists("reports.json"))
             await OpfsHandle.RemoveEntryAsync("reports.json");
 
-        if (await OpfsHandle.FileExists("images"))
+        if (await OpfsHandle.FileExists("images")) {
+            var imagesHandle = await OpfsHandle.GetDirectoryHandleAsync("images");
+            var files = await imagesHandle.ValuesAsync();
+
+            foreach (var imgHandle in files)
+                await imagesHandle.RemoveEntryAsync(await imgHandle.GetNameAsync());
+
             await OpfsHandle.RemoveEntryAsync("images");
+        }
 
         Config = new();
         Reports.Clear();

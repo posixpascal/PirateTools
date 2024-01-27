@@ -9,6 +9,7 @@ using BlazorDownloadFile;
 using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
 using Blazored.Modal;
+using ClipLazor.Extention;
 
 namespace PirateTools.TravelExpense.WebApp;
 
@@ -23,6 +24,7 @@ public static class Program {
         builder.Services.AddStorageManagerService();
         builder.Services.AddBlazorDownloadFile();
         builder.Services.AddBlazoredModal();
+        builder.Services.AddClipboard();
 
         builder.Services.AddScoped<FontService>();
 

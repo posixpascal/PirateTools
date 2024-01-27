@@ -1,5 +1,6 @@
 using Blazored.Modal;
 using Blazored.Modal.Services;
+using ClipLazor.Components;
 using Humanizer;
 using KristofferStrube.Blazor.FileSystem;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,9 @@ using PirateTools.TravelExpense.WebApp.Services;
 using PirateTools.TravelExpense.WebApp.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ClipLazor.Enums;
+using System;
+using System.IO;
 
 namespace PirateTools.TravelExpense.WebApp.Components.Modals;
 
@@ -21,6 +25,8 @@ public partial class FileSelectionModal {
     public required AppDataService AppData { get; set; }
     [Inject]
     public required IModalService ModalService { get; set; }
+    [Inject]
+    public required IClipLazor Clipboard { get; set; }
 
     [Parameter]
     public required string Title { get; set; }
@@ -33,6 +39,8 @@ public partial class FileSelectionModal {
 
     private bool Loading = true;
     private bool AddNew;
+
+    private bool CanUseClipboard;
 
     private async Task Cancel() {
         if (AddNew) {
@@ -54,9 +62,6 @@ public partial class FileSelectionModal {
     private void AddNewClicked() => AddNew = true;
 
     private async Task OnFileChanged(InputFileChangeEventArgs e) {
-        if (AppData.CurrentReport == null)
-            return;
-
         if (e.File.Size > MaxFileSize) {
             ModalService.Show<ErrorModal>("", new ModalParameters()
                 .Add(nameof(ErrorModal.Title), "Datei zu Groß!")
@@ -80,7 +85,54 @@ Bitte wähle ein kleineres Bild aus!"));
         AddNew = false;
     }
 
-    protected override async Task OnParametersSetAsync() => await Reload();
+    private async Task StoreFileFromClipboard() {
+        if (!CanUseClipboard)
+            return;
+
+        Loading = true;
+
+        var data = await Clipboard.ReadDataAsync("image/png");
+        if (data.IsEmpty) {
+            ModalService.Show<ErrorModal>("", new ModalParameters()
+                .Add(nameof(ErrorModal.Title), "Kein Bild!")
+                .Add(nameof(ErrorModal.Content), @"Die Daten in der Zwischenablage konnten nicht als
+PNG gelesen werden!"));
+            return;
+        }
+
+        if (data.Length > MaxFileSize) {
+            ModalService.Show<ErrorModal>("", new ModalParameters()
+                .Add(nameof(ErrorModal.Title), "Datei zu Groß!")
+                .Add(nameof(ErrorModal.Content), @$"Die ausgewählte Datei hat eine Größe von 
+{data.Length.Bytes().Humanize()}, es können aber nur Bilder bis maximal {MaxFileSize.Bytes().Humanize()}
+gespeichert werden.<br />
+Bitte wähle ein kleineres Bild aus!"));
+            return;
+        }
+
+        var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
+            .Add(nameof(SpinnerModal.Title), "Bild wird gespeichert"));
+        var opfsHandle = await StorageManager.GetOriginPrivateDirectoryAsync();
+        var imgDirHandle = await opfsHandle.GetDirectoryHandleAsync("images",
+            StorageUtility.DefaultDirOptions);
+
+        await using var memStream = new MemoryStream(data.ToArray());
+        await imgDirHandle.StoreFile(Guid.NewGuid().ToString() + ".png", memStream);
+
+        modal.Close();
+        await Reload();
+    }
+
+    protected override async Task OnParametersSetAsync() {
+        var clipboardSupported = await Clipboard.IsClipboardSupported();
+        var clipboardReadAllowed = await Clipboard.IsPermitted(PermissionCommand.Read);
+
+        Console.WriteLine($"Clipboard Supported: {clipboardSupported}, ClipboardReadAllowed: {clipboardReadAllowed}");
+
+        CanUseClipboard = clipboardSupported && clipboardReadAllowed;
+
+        await Reload();
+    }
 
     private async Task Reload() {
         Loading = true;

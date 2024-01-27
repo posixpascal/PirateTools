@@ -32,6 +32,18 @@
             </div>
 
             <div class="d-flex justify-content-end">
+                @if (CanUseClipboard) {
+                    <button class="btn btn-primary btn-lg me-2"
+                            @onclick=StoreFileFromClipboard>
+                        Aus Zwischenablage hinzufügen
+                    </button>
+                } else {
+                    <button class="btn btn-primary disabled me-2"
+                            style="cursor: not-allowed; pointer-events: auto;"
+                            title="Erlaube zugriff auf die Zwischenablage in den Seiten-Sicherheitseinstellungen in deinem Browser. Bitte beachte das dies in Firefox erst ab Version 122 möglich ist da die Firefox Entwickler verweigert haben dieses Feature die letzten 9 Jahre einzubauen >:(.">
+                        Aus Zwischenablage hinzufügen
+                    </button>
+                }
                 <button class="btn btn-primary btn-lg" @onclick=AddNewClicked>+</button>
             </div>
         }

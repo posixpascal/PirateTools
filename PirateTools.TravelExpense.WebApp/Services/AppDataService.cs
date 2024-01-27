@@ -31,13 +31,7 @@ public class AppDataService {
         var ppde = new Federation("PP", "Piratenpartei", "DE", "Deutschland") {
             Id = Guid.Parse("91d67031-d244-47e9-84c5-8e6f2c646507"),
             TreasurerAddress = "Piratenpartei Deutschland – Geschäftsstelle – Pflugstr. 9a – 10115 Berlin\r\nAn den Schatzmeister im Bundesvorstand (schatzmeister@piratenpartei.de)",
-            TravelExpenseRegulations = [
-                new TravelExpenseRegulation() {
-                    UseFile = "PPDE.pdf",
-                    AvailableFrom = new DateOnly(2022, 4, 1),
-                    MotorBikeCompensation = 0.13
-                }
-            ]
+            TravelExpenseRegulations = [ TravelExpenseRegulation.Default ]
         };
 
         var lvnds = new Federation("LV", "Landesverband", "NDS", "Niedersachsen") {
@@ -53,8 +47,16 @@ public class AppDataService {
             ]
         };
 
+        var lvbw = new Federation("LV", "Landesverband", "BW", "Baden-Württemberg") {
+            Id = Guid.Parse("6ca8375d-0858-4ec9-a46d-0162883c8dfc"),
+            TreasurerAddress = "Piratenpartei Baden-Württemberg - Gartenstrasse 32 - 72764 Reutlingen\r\nAn den Schatzmeister im Landesvorstand (schatzmeister@piratenpartei-bw.de)",
+            Parent = ppde,
+            TravelExpenseRegulations = [ TravelExpenseRegulation.Default ]
+        };
+
         Federations.Add(ppde);
         Federations.Add(lvnds);
+        Federations.Add(lvbw);
     }
 
     public async Task LoadDataAsync() {

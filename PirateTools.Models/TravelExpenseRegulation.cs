@@ -12,7 +12,7 @@ public class TravelExpenseRegulation {
 
     public static readonly TravelExpenseRegulation Default = new() {
         UseFile = "PPDE.pdf",
-        AvailableFrom = new DateOnly(2022, 1, 1),
+        AvailableFrom = new DateOnly(2022, 4, 1),
         MotorBikeCompensation = 0.13
     };
 }

@@ -31,7 +31,7 @@ public class Federation {
         Name = name;
     }
 
-    public string TravelExpenseClaimHead() => $"{TreasurerAddress}, {ShortType} {Name}";
+    public string TravelExpenseClaimHead() => $"{TreasurerAddress}";
 
     public string FullName() => $"{LongType} {Name}";
     public string Identifier() => ShortType + ShortName;

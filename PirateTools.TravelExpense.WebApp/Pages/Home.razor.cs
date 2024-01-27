@@ -63,6 +63,13 @@ public partial class Home {
         NavigationManager.NavigateTo("/StepUserSelection");
     }
 
+    private void UserManagement() {
+        if (!AppData.Config.UseLocalStorage)
+            return;
+
+        NavigationManager.NavigateTo("/Users/List");
+    }
+
     private async Task DeleteReport(TravelExpenseReport report) {
         AppData.Reports.Remove(report);
         await AppData.SaveReports();

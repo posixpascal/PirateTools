@@ -21,8 +21,6 @@ public partial class StepSummary {
     public required CultureInfo Culture { get; set; }
     [Inject]
     public required FontService FontService { get; set; }
-    [Inject]
-    public required IModalService ModalService { get; set; }
 
     protected override void OnParametersSet() {
         AppData.CurrentStep = WizardStep.Summary;

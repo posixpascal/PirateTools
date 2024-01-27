@@ -98,24 +98,37 @@ public static class PdfBuilder {
         pdf.Pages.RemoveAt(1);
         var actualAttachmentCount = report.AttachmentCount;
 
-        if (report.VehicleUsed.IsPrivateVehicle() && report.ImageMapRoute != null) {
-            actualAttachmentCount++;
-            await AddAttachment(pdf, report.ImageMapRoute, StorageManager,
-                $"Anlage #{actualAttachmentCount}: Route für die Fahrt mit einem privaten Fahrzeug");
+        if (report.VehicleUsed.IsPrivateVehicle()) {
+            foreach (var imgRef in report.ImageMapRoute) {
+                if (!imgRef.IsSet)
+                    continue;
+
+                actualAttachmentCount++;
+                await AddAttachment(pdf, imgRef.FileName, StorageManager,
+                    $"Anlage #{actualAttachmentCount}: Route für die Fahrt mit einem privaten Fahrzeug");
+            }
         }
 
-        if (report.VehicleUsed == Vehicle.PublicTransit && report.ImagePublicTransitReceipt != null) {
-            actualAttachmentCount++;
-            await AddAttachment(pdf, report.ImagePublicTransitReceipt, StorageManager,
-                $"Anlage #{actualAttachmentCount}: Beleg für das ÖPV Ticket");
+        if (report.VehicleUsed == Vehicle.PublicTransit) {
+            foreach (var imgRef in report.ImagePublicTransitReceipt) {
+                if (!imgRef.IsSet)
+                    continue;
+
+                actualAttachmentCount++;
+                await AddAttachment(pdf, imgRef.FileName, StorageManager,
+                    $"Anlage #{actualAttachmentCount}: Beleg für das ÖPV Ticket");
+            }
         }
 
         foreach (var entry in report.OtherCosts) {
             if (entry.ImageReceipt == null)
                 continue;
 
+            if (!entry.ImageReceipt.IsSet)
+                continue;
+
             actualAttachmentCount++;
-            await AddAttachment(pdf, entry.ImageReceipt, StorageManager,
+            await AddAttachment(pdf, entry.ImageReceipt.FileName, StorageManager,
                 $"Anlage #{actualAttachmentCount}: Beleg für Sonstige Kosten \"{entry.Text}\"");
         }
 

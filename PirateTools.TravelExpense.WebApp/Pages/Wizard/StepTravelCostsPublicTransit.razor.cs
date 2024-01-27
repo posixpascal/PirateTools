@@ -1,28 +1,29 @@
 using PirateTools.TravelExpense.WebApp.Models;
 using PirateTools.Models;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Forms;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepTravelCostsPublicTransit {
-    private bool SavingImage;
-
     protected override void OnParametersSet() {
         if (AppData.CurrentReport == null)
             return;
+
+        if (AppData.CurrentReport.ImagePublicTransitReceipt.Count == 0)
+            AppData.CurrentReport.ImagePublicTransitReceipt.Add(new());
 
         AppData.CurrentStep = WizardStep.TravelCostsPublicTransit;
         AppData.CurrentReport.VehicleUsed = Vehicle.PublicTransit;
     }
 
-    private async Task OnFileChanged(InputFileChangeEventArgs e) {
+    private void AddEntry() => AppData.CurrentReport?.ImagePublicTransitReceipt.Add(new());
+
+    private void OnRemoveClicked(TravelExpenseReport.ImageReference imgRef) {
         if (AppData.CurrentReport == null)
             return;
 
-        SavingImage = true;
-        await SaveImage(e.File.Name, e.File.OpenReadStream(4_096_000));
-        AppData.CurrentReport.ImagePublicTransitReceipt = e.File.Name;
-        SavingImage = false;
+        AppData.CurrentReport.ImagePublicTransitReceipt.Remove(imgRef);
+
+        if (AppData.CurrentReport.ImagePublicTransitReceipt.Count == 0)
+            AppData.CurrentReport.ImagePublicTransitReceipt.Add(new());
     }
 }

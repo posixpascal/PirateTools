@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -54,8 +55,8 @@ public class TravelExpenseReport {
     public double PublicTransitCosts { get; set; }
     public double DrivenKm { get; set; }
 
-    public string? ImagePublicTransitReceipt { get; set; }
-    public string? ImageMapRoute { get; set; }
+    public List<ImageReference> ImagePublicTransitReceipt { get; set; } = [];
+    public List<ImageReference> ImageMapRoute { get; set; } = [];
 
     [JsonIgnore]
     public double DrivenCompensation => CalculateDrivenCompensation();
@@ -64,7 +65,7 @@ public class TravelExpenseReport {
 
     public double AccommodationCosts { get; set; }
 
-    public string? ImageAccommodationReceipt { get; set; }
+    public List<ImageReference> ImageAccommodationReceipt { get; set; } = [];
 
     [JsonIgnore]
     public double NightsStayedCompensation => AccommodationType == AccommodationType.FlatRate ? (NightsStayed * 20d) : 0;
@@ -173,6 +174,13 @@ public class TravelExpenseReport {
         public string Text { get; set; } = "";
         public double Cost { get; set; }
         public bool Donate { get; set; }
-        public string? ImageReceipt { get; set; }
+        public ImageReference ImageReceipt { get; set; } = new();
+    }
+
+    public class ImageReference {
+        [MemberNotNullWhen(true, nameof(FileName))]
+        public bool IsSet => FileName != null;
+
+        public string? FileName { get; set; }
     }
 }

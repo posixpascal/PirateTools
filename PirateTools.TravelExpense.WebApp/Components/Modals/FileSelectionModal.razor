@@ -1,0 +1,45 @@
+﻿<BootstrapModal Title=@Title ShowCloseX=false MinWidth="75">
+    <Body>
+        @if (Loading) {
+            <div class="d-flex justify-content-center">
+                <SpinnerComponent />
+            </div>
+        } else if (AddNew) {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Neues Bild hinzufügen</h5>
+
+                    <p class="card-text mb-1">Neues Bild auswählen (Maximal 4 Mb)</p>
+                    <InputFile OnChange=OnFileChanged />
+                </div>
+            </div>
+        } else {
+            <div class="row row-cols-4 mb-4">
+                @foreach (var file in Files) {
+                    var fn = file.Name;
+
+                    <div class="col mb-2">
+                        <div class="card h-100 pointer box-highlight" @onclick=@(async () => await Select(fn))>
+                            <img class="card-img-top p-1"
+                                 src="data:image/png;base64, @Convert.ToBase64String(file.Data)"
+                                 style="height: 12em; object-fit: contain;" />
+                            <div class="card-body">
+                                <p class="card-text">@file.Name</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary btn-lg" @onclick=AddNewClicked>+</button>
+            </div>
+        }
+    </Body>
+    <Footer>
+        <div class="d-flex justify-content-between" style="width: 100%;">
+            <button class="btn btn-warning" @onclick=Cancel>Abbrechen</button>
+            @* <button class="btn btn-success">Auswählen</button> *@
+        </div>
+    </Footer>
+</BootstrapModal>

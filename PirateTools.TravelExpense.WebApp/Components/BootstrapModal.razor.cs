@@ -14,6 +14,9 @@ public partial class BootstrapModal {
     [Parameter]
     public RenderFragment? Footer { get; set; }
 
+    [Parameter]
+    public int MinWidth { get; set; } = 33;
+
     [CascadingParameter]
     public required BlazoredModalInstance BlazoredModal { get; set; }
 

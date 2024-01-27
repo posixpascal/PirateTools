@@ -69,7 +69,14 @@ public class AppDataService {
         if (await OpfsHandle.FileExists("reports.json")) {
             var reportsHandle = await OpfsHandle.GetFileHandleAsync("reports.json");
             var file = await reportsHandle.GetFileAsync();
-            var loadedReports = JsonSerializer.Deserialize<List<TravelExpenseReport>>(await file.TextAsync());
+
+            List<TravelExpenseReport>? loadedReports = null;
+            try {
+                loadedReports = JsonSerializer.Deserialize<List<TravelExpenseReport>>(await file.TextAsync());
+            } catch (Exception) {
+                if (await OpfsHandle.FileExists("reports.json"))
+                    await OpfsHandle.RemoveEntryAsync("reports.json");
+            }
 
             if (loadedReports != null)
                 Reports = loadedReports;

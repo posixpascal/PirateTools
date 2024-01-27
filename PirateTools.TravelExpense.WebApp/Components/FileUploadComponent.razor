@@ -1,0 +1,27 @@
+﻿<div class="card">
+    <div class="card-body">
+        <h5 class="card-title mb-3">@Title</h5>
+
+        @if (AppData.Config.UseLocalStorage) {
+            @if (!ImageRef.IsSet) {
+                <p class="card-text">Kein Bild ausgewählt</p>
+            } else {
+                <p class="card-text">Ausgewähltes Bild: @ImageRef.FileName</p>
+            }
+        } else {
+            <p class="card-text">Um dieses feature nutzen zu können, erlaube bitte die Speicherung von Daten in deinem Browser.</p>
+            <button @onclick=AllowLocalStorage class="btn btn-primary">Erlauben</button>
+        }
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <button class="btn btn-warning @(AppData.Config.UseLocalStorage ? "" : "disabled")"
+                @onclick=OnRemoveClicked>
+            Auswahl entfernen
+        </button>
+        <button class="btn btn-primary @(AppData.Config.UseLocalStorage ? "" : "disabled")"
+                @onclick=OnOpenModal>
+            @(ImageRef.IsSet ? "Neues Bild auswählen" : "Bild auswählen")
+        </button>
+    </div>
+</div>

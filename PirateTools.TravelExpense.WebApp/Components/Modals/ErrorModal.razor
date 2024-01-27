@@ -1,0 +1,12 @@
+﻿<BootstrapModal Title=@Title ShowCloseX=true>
+    <Body>
+        @if (!string.IsNullOrEmpty(Content)) {
+            @((MarkupString)Content)
+        }
+    </Body>
+    <Footer>
+        <div class="text-end">
+            <button class="btn btn-primary" @onclick=Close>Ok</button>
+        </div>
+    </Footer>
+</BootstrapModal>

@@ -15,6 +15,8 @@ public class TravelExpenseReport {
     public Pirate? Pirate { get; set; }
     public Federation? Federation { get; set; }
 
+    public TravelExpenseRegulation Regulation { get; set; } = TravelExpenseRegulation.Default;
+
     public string Function { get; set; } = "";
     public string TravelReason { get; set; } = "";
 
@@ -68,7 +70,8 @@ public class TravelExpenseReport {
     public List<ImageReference> ImageAccommodationReceipt { get; set; } = [];
 
     [JsonIgnore]
-    public double NightsStayedCompensation => AccommodationType == AccommodationType.FlatRate ? (NightsStayed * 20d) : 0;
+    public double NightsStayedCompensation
+        => AccommodationType == AccommodationType.FlatRate ? (NightsStayed * 20d) : 0;
 
     [JsonIgnore]
     public double CalculatedAccommodationCosts {
@@ -146,7 +149,7 @@ public class TravelExpenseReport {
         if (!VehicleUsed.IsPrivateVehicle())
             return 0;
 
-        return (VehicleUsed == Vehicle.Car ? 0.3 : 0.13) * DrivenKm;
+        return (VehicleUsed == Vehicle.Car ? 0.3 : Regulation.MotorBikeCompensation) * DrivenKm;
     }
 
     public double GetVehicleOrPublicTransitCosts() {
@@ -168,6 +171,26 @@ public class TravelExpenseReport {
         }
 
         return fileName + ".pdf";
+    }
+
+    public void FigureOutRegulation() {
+        if (Federation == null || Federation.TravelExpenseRegulations.Count == 0) {
+            Regulation = TravelExpenseRegulation.Default;
+            Console.WriteLine($"Federation: {Federation?.Name ?? "null"}, " +
+                $"RegulationCount: {Federation?.TravelExpenseRegulations.Count ?? 0}");
+            return;
+        }
+
+        //Find the newest regulation that fits our StartDate
+        foreach (var regulation in Federation.TravelExpenseRegulations
+            .OrderByDescending(r => r.AvailableFrom)) {
+            if (regulation.AvailableFrom > StartDate)
+                continue;
+
+            Regulation = regulation;
+            Console.WriteLine("Found a Regulation: " + Regulation.UseFile);
+            break;
+        }
     }
 
     public class AdditionalCosts {

@@ -4,11 +4,9 @@ using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.AcroForms;
 using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Utils;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Services;
 using PirateTools.TravelExpense.WebApp.Utility;
-using SixLabors.ImageSharp;
 using System;
 using System.Globalization;
 using System.IO;
@@ -28,7 +26,7 @@ public static class PdfBuilder {
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        var data = await Http.GetStreamAsync("Resources/TravelExpensePDFs/LVNDS.pdf");
+        var data = await Http.GetStreamAsync("Resources/TravelExpensePDFs/" + report.Regulation.UseFile);
         var pdf = PdfReader.Open(data);
         var form = pdf.AcroForm;
 

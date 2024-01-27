@@ -39,7 +39,7 @@
     <div class="col-6">
         <div class="mb-3">
             <label class="form-label">Abreisedatum</label>
-            <input class="form-control" type="date" @bind=AppData.CurrentReport.StartDate />
+            <input class="form-control" type="date" @bind=AppData.CurrentReport.StartDate @bind:after=OnStartDateChanged />
         </div>
     </div>
     <div class="col-6">

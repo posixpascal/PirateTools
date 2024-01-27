@@ -11,6 +11,7 @@ public partial class StepFederationDataEntry {
                 return;
 
             AppData.CurrentReport.Federation = AppData.Federations.Find(f => f.Id == value);
+            AppData.CurrentReport.FigureOutRegulation();
         }
     }
 
@@ -24,6 +25,8 @@ public partial class StepFederationDataEntry {
             } else {
                 AppData.CurrentReport.Federation = AppData.Federations[0];
             }
+
+            AppData.CurrentReport.FigureOutRegulation();
         }
 
         AppData.CurrentStep = WizardStep.FederationDataEntry;

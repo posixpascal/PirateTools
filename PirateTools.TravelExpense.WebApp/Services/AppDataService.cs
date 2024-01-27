@@ -29,13 +29,28 @@ public class AppDataService {
         StorageManager = storageManager;
 
         var ppde = new Federation("PP", "Piratenpartei", "DE", "Deutschland") {
-            Id = Guid.Parse("91d67031-d244-47e9-84c5-8e6f2c646507")
+            Id = Guid.Parse("91d67031-d244-47e9-84c5-8e6f2c646507"),
+            TreasurerAddress = "Piratenpartei Deutschland – Geschäftsstelle – Pflugstr. 9a – 10115 Berlin\r\nAn den Schatzmeister im Bundesvorstand (schatzmeister@piratenpartei.de)",
+            TravelExpenseRegulations = [
+                new TravelExpenseRegulation() {
+                    UseFile = "PPDE.pdf",
+                    AvailableFrom = new DateOnly(2022, 4, 1),
+                    MotorBikeCompensation = 0.13
+                }
+            ]
         };
 
         var lvnds = new Federation("LV", "Landesverband", "NDS", "Niedersachsen") {
             Id = Guid.Parse("db25b44c-6485-47e2-8d07-8cf187080343"),
             TreasurerAddress = "Schatzmeister Niedersachsen (schatzmeister@piraten-nds.de)",
-            Parent = ppde
+            Parent = ppde,
+            TravelExpenseRegulations = [
+                new TravelExpenseRegulation() {
+                    UseFile = "LVNDS.pdf",
+                    AvailableFrom = new DateOnly(2022, 3, 1),
+                    MotorBikeCompensation = 0.20
+                }
+            ]
         };
 
         Federations.Add(ppde);

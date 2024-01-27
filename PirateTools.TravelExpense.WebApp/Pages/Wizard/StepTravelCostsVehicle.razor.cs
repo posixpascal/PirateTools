@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Models;
+using System;
 using System.Globalization;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
@@ -24,7 +25,12 @@ public partial class StepTravelCostsVehicle {
         AppData.CurrentReport.VehicleUsed = VehicleUsed;
     }
 
-    private double GetFactor() => VehicleUsed == Vehicle.Car ? 0.3 : 0.13;
+    private double GetFactor() {
+        if (AppData.CurrentReport == null)
+            return 0.3;
+
+        return VehicleUsed == Vehicle.Car ? 0.3 : AppData.CurrentReport.Regulation.MotorBikeCompensation;
+    }
 
     private void AddEntry() => AppData.CurrentReport?.ImageMapRoute.Add(new());
 

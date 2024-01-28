@@ -42,8 +42,11 @@ public static class PdfBuilder {
             SetField(form, "Landesverband", report.Pirate.Federation.Name);
 
             SetField(form, "EMail", report.Pirate.EMail ?? "");
-            SetField(form, "PiratIBAN", report.Pirate.IBAN ?? "");
-            SetField(form, "PiratBIC", report.Pirate.BIC ?? "");
+
+            if (!report.IsDonatingAll()) {
+                SetField(form, "PiratIBAN", report.Pirate.IBAN ?? "");
+                SetField(form, "PiratBIC", report.Pirate.BIC ?? "");
+            }
         }
 
         SetField(form, "Funktion", report.Function);

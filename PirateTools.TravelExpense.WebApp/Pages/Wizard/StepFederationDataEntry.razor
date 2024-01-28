@@ -11,7 +11,7 @@
 <div class="mb-3">
     <label class="form-label">Verband (Für welchen Verband bist du gereist)</label>
     <select class="form-select" @bind=SelectedFedeationId>
-        @foreach (var federation in AppData.Federations) {
+        @foreach (var federation in AppData.Federations.Where(f => f.CanBeUsedForReport)) {
             <option value=@federation.Id>@federation.FullName()</option>
         }
     </select>

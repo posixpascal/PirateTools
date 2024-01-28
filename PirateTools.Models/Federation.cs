@@ -21,6 +21,9 @@ public class Federation {
 
     public string? TreasurerAddress { get; set; }
 
+    [JsonIgnore]
+    public bool CanBeUsedForReport => !string.IsNullOrEmpty(TreasurerAddress) && TravelExpenseRegulations.Count > 0;
+
     [JsonConstructor]
     public Federation() { }
 

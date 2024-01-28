@@ -91,4 +91,13 @@ public partial class Home {
         await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService, StorageManager);
         modal.Close();
     }
+
+    private async Task Copy(TravelExpenseReport report) {
+        var newReport = report.Clone();
+        AppData.CurrentReport = report;
+        AppData.Reports.Add(newReport);
+        await AppData.SaveReports();
+
+        NavigationManager.NavigateTo("/StepFederationDataEntry");
+    }
 }

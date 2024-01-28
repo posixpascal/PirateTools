@@ -193,11 +193,47 @@ public class TravelExpenseReport {
         }
     }
 
+    /// <summary>
+    /// Clones this TravelExpenseReport but will assign a new Guid!
+    /// </summary>
+    public TravelExpenseReport Clone() {
+        return new TravelExpenseReport() {
+            Id = Guid.NewGuid(),
+            StartDate = StartDate,
+            EndDate = EndDate,
+            Destination = Destination,
+            VehicleUsed = VehicleUsed,
+            DrivenKm = DrivenKm,
+            PublicTransitCosts = PublicTransitCosts,
+            OtherCosts = OtherCosts.ConvertAll(c => c.Clone()),
+            DonateAll = DonateAll,
+            DonateAmountCustom = DonateAmountCustom,
+            DonatePublicTransitCosts = DonatePublicTransitCosts,
+            DonateKmFlatRate = DonateKmFlatRate,
+            DonateFoodFlatRateFullDays = DonateFoodFlatRateFullDays,
+            DonateFoodFlatRateShortDays = DonateFoodFlatRateShortDays,
+            DonateAccommodationCosts = DonateAccommodationCosts,
+            Federation = Federation,
+            Pirate = Pirate,
+            AttachmentCount = AttachmentCount,
+            TravelReason = TravelReason,
+        };
+    }
+
     public class AdditionalCosts {
         public string Text { get; set; } = "";
         public double Cost { get; set; }
         public bool Donate { get; set; }
         public ImageReference ImageReceipt { get; set; } = new();
+
+        public AdditionalCosts Clone() {
+            return new AdditionalCosts() {
+                Text = Text,
+                Cost = Cost,
+                Donate = Donate,
+                ImageReceipt = ImageReceipt.Clone()
+            };
+        }
     }
 
     public class ImageReference {
@@ -205,5 +241,11 @@ public class TravelExpenseReport {
         public bool IsSet => FileName != null;
 
         public string? FileName { get; set; }
+
+        public ImageReference Clone() {
+            return new ImageReference() {
+                FileName = FileName
+            };
+        }
     }
 }

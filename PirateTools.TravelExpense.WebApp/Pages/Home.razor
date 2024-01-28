@@ -62,9 +62,18 @@
                             <td>@report.TravelReason</td>
                             <td>@report.Pirate?.Name</td>
                             <td class="text-end">
-                                <a class="pointer" @onclick=@(() => DeleteReport(report))><i class="bi bi-trash-fill text-danger"></i></a>
-                                <a class="pointer" @onclick=@(() => EditReport(report))><i class="bi bi-pencil-fill text-success"></i></a>
-                                <a class="pointer" @onclick=@(() => BuildPdf(report))><i class="bi bi-filetype-pdf text-primary"></i></a>
+                                <a class="pointer pe-1" @onclick=@(() => DeleteReport(report))>
+                                    <i class="bi bi-trash-fill text-danger"></i>
+                                </a>
+                                <a class="pointer pe-1" @onclick=@(() => EditReport(report))>
+                                    <i class="bi bi-pencil-fill text-success"></i>
+                                </a>
+                                <a class="pointer pe-1" @onclick=@(() => BuildPdf(report))>
+                                    <i class="bi bi-filetype-pdf text-primary"></i>
+                                </a>
+                                <a class="pointer" @onclick=@(() => Copy(report))>
+                                    <i class="bi bi-copy text-primary"></i>
+                                </a>
                             </td>
                         </tr>
                     }

@@ -21,7 +21,7 @@ public class TravelExpenseReport {
     public string TravelReason { get; set; } = "";
 
     public string ResolutionID { get; set; } = "";
-    public DateOnly ResolutionDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    public DateOnly? ResolutionDate { get; set; }
 
     public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     public DateOnly EndDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);

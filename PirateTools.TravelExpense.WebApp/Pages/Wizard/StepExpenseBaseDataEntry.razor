@@ -22,13 +22,15 @@
     <div class="col-9">
         <div class="mb-3">
             <label class="form-label">Beschluss-Nr. (Manche Reisen brauchen zwingend einen Beschluss!)</label>
-            <input class="form-control" @bind=AppData.CurrentReport.ResolutionID />
+            <input class="form-control" @bind=AppData.CurrentReport.ResolutionID
+                   @bind:after=OnResolutionIDChanged @bind:event="oninput" />
         </div>
     </div>
     <div class="col-3">
         <div class="mb-3">
             <label class="form-label">Datum des Beschluss</label>
-            <input class="form-control" type="date" @bind=AppData.CurrentReport.ResolutionDate />
+            <input class="form-control" type="date" @bind=AppData.CurrentReport.ResolutionDate
+                   disabled="@(string.IsNullOrEmpty(AppData.CurrentReport.ResolutionID))" />
         </div>
     </div>
 </div>

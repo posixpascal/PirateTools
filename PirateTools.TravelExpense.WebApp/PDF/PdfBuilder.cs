@@ -52,8 +52,10 @@ public static class PdfBuilder {
         SetField(form, "Funktion", report.Function);
         SetField(form, "Zweck", report.TravelReason);
 
-        SetField(form, "BeschlussNr", report.ResolutionID);
-        SetField(form, "BeschlussDatum", report.ResolutionDate.ToString(Culture));
+        if (!string.IsNullOrEmpty(report.ResolutionID)) {
+            SetField(form, "BeschlussNr", report.ResolutionID);
+            SetField(form, "BeschlussDatum", report.ResolutionDate?.ToString(Culture) ?? "");
+        }
 
         SetField(form, "ReiseStartDatum", report.StartDate.ToString(Culture));
         SetField(form, "ReiseEndeDatum", report.EndDate.ToString(Culture));

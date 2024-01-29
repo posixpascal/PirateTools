@@ -8,9 +8,10 @@ using System.Globalization;
 using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.PDF;
 using Blazored.Modal.Services;
-using PirateTools.TravelExpense.WebApp.Components;
 using Blazored.Modal;
 using PirateTools.TravelExpense.WebApp.Components.Modals;
+using System.Security.Cryptography;
+using System;
 
 namespace PirateTools.TravelExpense.WebApp.Pages;
 
@@ -71,8 +72,16 @@ public partial class Home {
     }
 
     private async Task DeleteReport(TravelExpenseReport report) {
-        AppData.Reports.Remove(report);
-        await AppData.SaveReports();
+        var modal = ModalService.Show<DeleteConfirmModal>("", new ModalParameters()
+            .Add(nameof(DeleteConfirmModal.CustomMessage), $@"Bist du sicher das du den Reisekostenantrag
+vom {report.StartDate.ToString(Culture)}, für die Reise '{report.TravelReason}' nach '{report.Destination}',
+löschen möchtest?"));
+        var result = await modal.Result;
+
+        if (!result.Cancelled && result.Data is bool confirmed && confirmed) {
+            AppData.Reports.Remove(report);
+            await AppData.SaveReports();
+        }
     }
 
     private void EditReport(TravelExpenseReport report) {

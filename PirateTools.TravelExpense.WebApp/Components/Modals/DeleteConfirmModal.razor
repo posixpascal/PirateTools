@@ -1,0 +1,15 @@
+﻿<BootstrapModal Title="Wirklich Löschen?" ShowCloseX=true>
+    <Body>
+        @if (CustomMessage != null) {
+            @CustomMessage
+        } else {
+            <p>Bist du sicher das du '@Item' Löschen möchtest?</p>
+        }
+    </Body>
+    <Footer>
+        <div class="d-flex justify-content-between" style="width: 100%;">
+            <button class="btn btn-warning" @onclick=Close>Abbrechen</button>
+            <button class="btn btn-danger" @onclick=Confirm>Löschen</button>
+        </div>
+    </Footer>
+</BootstrapModal>

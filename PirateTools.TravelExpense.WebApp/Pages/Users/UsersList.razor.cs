@@ -1,5 +1,8 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using PirateTools.Models;
+using PirateTools.TravelExpense.WebApp.Components.Modals;
 using PirateTools.TravelExpense.WebApp.Services;
 using System;
 using System.Threading.Tasks;
@@ -11,6 +14,8 @@ public partial class UsersList {
     public required AppDataService AppData { get; set; }
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
+    [Inject]
+    public required IModalService ModalService { get; set; }
 
     protected override async Task OnParametersSetAsync() {
         await AppData.LoadDataAsync();
@@ -29,7 +34,13 @@ public partial class UsersList {
     private void EditUser(Pirate user) => NavigationManager.NavigateTo($"/Users/Edit/{user.Id}");
 
     private async Task DeleteUser(Pirate user) {
-        AppData.Config.Users.Remove(user);
-        await AppData.SaveConfigAsync();
+        var modal = ModalService.Show<DeleteConfirmModal>("", new ModalParameters()
+            .Add(nameof(DeleteConfirmModal.Item), user.Name));
+        var result = await modal.Result;
+
+        if (!result.Cancelled && result.Data is bool confirmed && confirmed) {
+            AppData.Config.Users.Remove(user);
+            await AppData.SaveConfigAsync();
+        }
     }
 }

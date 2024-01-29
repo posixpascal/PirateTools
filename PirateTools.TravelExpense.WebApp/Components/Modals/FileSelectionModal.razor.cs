@@ -35,7 +35,7 @@ public partial class FileSelectionModal {
     [Parameter]
     public long MaxFileSize { get; set; } = 4_194_304;
 
-    private readonly List<ImageInfo> Files = [];
+    private readonly List<FileInfo> Files = [];
 
     private bool Loading = true;
     private bool AddNew;
@@ -50,7 +50,7 @@ public partial class FileSelectionModal {
 
         Loading = true;
         StateHasChanged();
-        await Modal.CloseAsync();
+        await Modal.CancelAsync();
     }
 
     private async Task Select(string fileName) {
@@ -66,14 +66,14 @@ public partial class FileSelectionModal {
             ModalService.Show<ErrorModal>("", new ModalParameters()
                 .Add(nameof(ErrorModal.Title), "Datei zu Groß!")
                 .Add(nameof(ErrorModal.Content), @$"Die ausgewählte Datei hat eine Größe von 
-{e.File.Size.Bytes().Humanize()}, es können aber nur Bilder bis maximal {MaxFileSize.Bytes().Humanize()}
+{e.File.Size.Bytes().Humanize()}, es können aber nur Dateien bis maximal {MaxFileSize.Bytes().Humanize()}
 gespeichert werden.<br />
-Bitte wähle ein kleineres Bild aus!"));
+Bitte wähle eine kleinere Datei aus!"));
             return;
         }
 
         var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
-            .Add(nameof(SpinnerModal.Title), "Bild wird gespeichert"));
+            .Add(nameof(SpinnerModal.Title), "Datei wird gespeichert"));
         var opfsHandle = await StorageManager.GetOriginPrivateDirectoryAsync();
         var imgDirHandle = await opfsHandle.GetDirectoryHandleAsync("images",
             StorageUtility.DefaultDirOptions);
@@ -104,14 +104,14 @@ PNG gelesen werden!"));
             ModalService.Show<ErrorModal>("", new ModalParameters()
                 .Add(nameof(ErrorModal.Title), "Datei zu Groß!")
                 .Add(nameof(ErrorModal.Content), @$"Die ausgewählte Datei hat eine Größe von 
-{data.Length.Bytes().Humanize()}, es können aber nur Bilder bis maximal {MaxFileSize.Bytes().Humanize()}
+{data.Length.Bytes().Humanize()}, es können aber nur Dateien bis maximal {MaxFileSize.Bytes().Humanize()}
 gespeichert werden.<br />
-Bitte wähle ein kleineres Bild aus!"));
+Bitte wähle eine kleinere Datei aus!"));
             return;
         }
 
         var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
-            .Add(nameof(SpinnerModal.Title), "Bild wird gespeichert"));
+            .Add(nameof(SpinnerModal.Title), "Datei wird gespeichert"));
         var opfsHandle = await StorageManager.GetOriginPrivateDirectoryAsync();
         var imgDirHandle = await opfsHandle.GetDirectoryHandleAsync("images",
             StorageUtility.DefaultDirOptions);
@@ -139,11 +139,15 @@ Bitte wähle ein kleineres Bild aus!"));
         Files.Clear();
 
         await foreach (var f in IterateFiles()) {
-            var fileName = await f.GetNameAsync();
-            var file = await f.GetFileAsync();
-            var blob = await file.SliceAsync();
-            var data = await blob.ArrayBufferAsync();
-            Files.Add(new(fileName, data));
+            var filename = await f.GetNameAsync();
+            if (filename.EndsWith(".pdf")) {
+                Files.Add(new PdfInfo(filename));
+            } else {
+                var file = await f.GetFileAsync();
+                var blob = await file.SliceAsync();
+                var data = await blob.ArrayBufferAsync();
+                Files.Add(new ImageInfo(filename, data));
+            }
         }
 
         Loading = false;
@@ -167,13 +171,23 @@ Bitte wähle ein kleineres Bild aus!"));
         }
     }
 
-    private class ImageInfo {
+    private class FileInfo {
         public string Name { get; }
+
+        public FileInfo(string name) {
+            Name = name;
+        }
+    }
+
+    private class ImageInfo : FileInfo {
         public byte[] Data { get; }
 
-        public ImageInfo(string name, byte[] data) {
-            Name = name;
+        public ImageInfo(string name, byte[] data) : base(name) {
             Data = data;
         }
+    }
+
+    private class PdfInfo : FileInfo {
+        public PdfInfo(string name) : base(name) { }
     }
 }

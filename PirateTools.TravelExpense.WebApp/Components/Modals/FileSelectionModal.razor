@@ -7,9 +7,9 @@
         } else if (AddNew) {
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Neues Bild hinzufügen</h5>
+                    <h5 class="card-title mb-3">Neue Datei hinzufügen</h5>
 
-                    <p class="card-text mb-1">Neues Bild auswählen (Maximal 4 Mb)</p>
+                    <p class="card-text mb-1">Neue Datei auswählen (Maximal 4 Mb)</p>
                     <InputFile OnChange=OnFileChanged />
                 </div>
             </div>
@@ -20,9 +20,14 @@
 
                     <div class="col mb-2">
                         <div class="card h-100 pointer box-highlight" @onclick=@(async () => await Select(fn))>
-                            <img class="card-img-top p-1"
-                                 src="data:image/png;base64, @Convert.ToBase64String(file.Data)"
-                                 style="height: 12em; object-fit: contain;" />
+                            @if (file is ImageInfo iFile) {
+                                <img class="card-img-top p-1"
+                                     src="data:image/png;base64, @Convert.ToBase64String(iFile.Data)"
+                                     style="height: 12em; object-fit: contain;" />
+                            } else {
+                                <i class="card-img-top p-1 bi bi-file-earmark-pdf-fill"
+                                   style="font-size: 7em; height: 100%; text-align: center;"></i>
+                            }
                             <div class="card-body">
                                 <p class="card-text">@file.Name</p>
                             </div>

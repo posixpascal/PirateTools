@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 namespace PirateTools.TravelExpense.WebApp.PDF;
 
 public static class PdfBuilder {
+    private const double A4Height = 842;
+    private const double A4Width = 595;
+
     private static readonly byte[] AttachmentBuffer = new byte[5_000_000];
 
     public static async Task BuildPdfAsync(TravelExpenseReport report, FontService FontService,
@@ -164,7 +167,47 @@ public static class PdfBuilder {
         if (!await imagesDirHandle.FileExists(filename))
             return;
 
-        var attachmentPage = pdf.AddPage();
+        await using var newStream = await LoadFileAsync(imagesDirHandle, filename);
+
+        var fontSize = 8;
+        var font = new XFont("OpenSans", fontSize);
+
+        PdfPage? page = null;
+        XGraphics gfx;
+
+        // Finally, File!
+        var width = A4Width;
+        if (filename.EndsWith(".pdf")) {
+            var loadedPdf = PdfReader.Open(newStream, PdfDocumentOpenMode.Import);
+
+            if (loadedPdf.PageCount == 0) {
+                page = pdf.AddPage();
+            } else {
+                foreach (var p in loadedPdf.Pages) {
+                    var newPage = pdf.AddPage(p);
+                    page ??= newPage;
+                }
+            }
+
+            gfx = XGraphics.FromPdfPage(page);
+        } else if (filename.EndsWith(".png")) {
+            page = pdf.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            var image = XImage.FromStream(() => newStream);
+            PlaceImage(gfx, page, image, out width);
+        } else {
+            page = pdf.AddPage();
+            gfx = XGraphics.FromPdfPage(page);
+            gfx.DrawString($"Der Dateityp wird nicht unterstützt: {Path.GetExtension(filename)}!",
+                font, XBrushes.Black, 10, 30, XStringFormats.TopLeft);
+        }
+
+        gfx.DrawRectangle(XBrushes.LightGray, 0, 0, width, fontSize + 6);
+        gfx.DrawString(reason, font, XBrushes.Black, 3, 1, XStringFormats.TopLeft);
+        gfx.DrawString(filename, font, XBrushes.Black, width - 3, 1, XStringFormats.TopRight);
+    }
+
+    private static async Task<MemoryStream> LoadFileAsync(FileSystemDirectoryHandle imagesDirHandle, string filename) {
         var fileStream = await imagesDirHandle.LoadFile(filename);
 
         // Copy the image into a MemoryStream - this Copy MUST run async because JS doesn't support sync copies
@@ -176,31 +219,20 @@ public static class PdfBuilder {
 
         // But guess what, PDFSharp doesn't want to load an XImage from a MemoryStream if it was copied into it
         var data = memStream.ToArray();
-        await using var newStream = new MemoryStream(data);
-
-        // Finally, Image!
-        var gfx = XGraphics.FromPdfPage(attachmentPage);
-        var image = XImage.FromStream(() => newStream);
-        PlaceImage(gfx, attachmentPage, image);
-
-        // And some text ... that's the easy part
-        var font = new XFont("OpenSans", 16);
-        gfx.DrawString(reason, font, XBrushes.Black, 10, 10, XStringFormats.TopLeft);
-        gfx.DrawString(filename, font, XBrushes.Black, 10, 30, XStringFormats.TopLeft);
+        return new MemoryStream(data);
     }
 
-    private static void PlaceImage(XGraphics gfx, PdfPage page, XImage image) {
-        const double A4Height = 842 - 80;
-        const double A4Width = 595 - 20;
-
+    private static void PlaceImage(XGraphics gfx, PdfPage page, XImage image, out double width) {
         page.Size = PdfSharpCore.PageSize.A4;
         double scale;
 
         if (image.PixelWidth > image.PixelHeight && image.PixelWidth > A4Width) {
             page.Orientation = PdfSharpCore.PageOrientation.Landscape;
-            scale = Math.Max(1, image.PixelWidth / A4Height);
+            scale = Math.Max(1, image.PixelWidth / (A4Height - 80));
+            width = A4Height;
         } else {
-            scale = Math.Max(1, image.PixelHeight / A4Height);
+            scale = Math.Max(1, image.PixelHeight / (A4Height - 20));
+            width = A4Width;
         }
 
         gfx.DrawImage(image, 10, 60, image.PixelWidth / scale, image.PixelHeight / scale);

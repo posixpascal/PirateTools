@@ -33,7 +33,7 @@ public static class TravelExpenseReportValidator {
 
         var vehicleCostStep = $"StepTravelCostsVehicle/{(int)report.VehicleUsed}";
         if (report.VehicleUsed.IsPrivateVehicle() && report.DrivenKm > 0 && !report.ImageMapRoute.Any(ir => ir.IsSet))
-            yield return ReportIssue.Error("Es fehlt ein Bild für die Nutzung eines privaten Fahrzeuges.", vehicleCostStep);
+            yield return ReportIssue.Error("Es fehlt ein Bild der Strecke für die Nutzung eines privaten Fahrzeuges.", vehicleCostStep);
         if (report.VehicleUsed == Vehicle.PublicTransit && !report.ImagePublicTransitReceipt.Any(ir => ir.IsSet))
             yield return ReportIssue.Error("Es fehlt ein Beleg für die Nutzung des ÖPV!", "StepTravelCostsPublicTransit");
         if (report.OtherCosts.Any(oc => oc.Cost > 0 && !oc.ImageReceipt.IsSet))

@@ -39,7 +39,7 @@ public partial class FileUploadComponent {
 
     private async Task OnOpenModal() {
         var modal = ModalService.Show<FileSelectionModal>("", new ModalParameters()
-            .Add(nameof(FileSelectionModal.Title), "Wähle ein Bild")
+            .Add(nameof(FileSelectionModal.Title), "Wähle eine Datei")
             .Add(nameof(FileSelectionModal.Path), "images")
             .Add(nameof(FileSelectionModal.MaxFileSize), MaxFileSize));
 

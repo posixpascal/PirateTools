@@ -4,9 +4,9 @@
 
         @if (AppData.Config.UseLocalStorage) {
             @if (!ImageRef.IsSet) {
-                <p class="card-text">Kein Bild ausgewählt</p>
+                <p class="card-text">Keine Datei ausgewählt</p>
             } else {
-                <p class="card-text">Ausgewähltes Bild: @ImageRef.FileName</p>
+                <p class="card-text">Ausgewählte Datei: @ImageRef.FileName</p>
             }
         } else {
             <p class="card-text">Um dieses feature nutzen zu können, erlaube bitte die Speicherung von Daten in deinem Browser.</p>
@@ -21,7 +21,7 @@
         </button>
         <button class="btn btn-primary @(AppData.Config.UseLocalStorage ? "" : "disabled")"
                 @onclick=OnOpenModal>
-            @(ImageRef.IsSet ? "Neues Bild auswählen" : "Bild auswählen")
+            @(ImageRef.IsSet ? "Neue Datei auswählen" : "Datei auswählen")
         </button>
     </div>
 </div>

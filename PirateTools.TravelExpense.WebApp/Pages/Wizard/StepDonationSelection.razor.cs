@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Models;
-using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
+using System.Linq;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
@@ -29,7 +30,11 @@ public partial class StepDonationSelection {
             return;
 
         if (AppData.CurrentReport.IsDonatingAll()) {
-            NavigationManager.NavigateTo("/StepSummary");
+            if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
+                NavigationManager.NavigateTo("/StepEntryIssues");
+            } else {
+                NavigationManager.NavigateTo("/StepSummary");
+            }
         } else {
             NavigationManager.NavigateTo("/StepBankInformationEntry");
         }

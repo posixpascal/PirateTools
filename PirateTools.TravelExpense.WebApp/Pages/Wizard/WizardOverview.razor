@@ -191,6 +191,18 @@
     </div>
 }
 
+@if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
+    <div class="mb-3">
+        <NavLink href="/StepEntryIssues" class="no-decoration">
+            <div class="card box-highlight pointer">
+                <div class="card-body">
+                    <h5 class="card-title">Probleme und Hinweise</h5>
+                </div>
+            </div>
+        </NavLink>
+    </div>
+}
+
 <div class="mb-3">
     <NavLink href="/StepSummary" class="no-decoration">
         <div class="card box-highlight pointer">

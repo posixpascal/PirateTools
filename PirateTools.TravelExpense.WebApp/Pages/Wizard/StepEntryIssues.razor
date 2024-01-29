@@ -1,0 +1,43 @@
+﻿@page "/StepEntryIssues"
+@using PirateTools.Models
+@layout VerticalCenterLayout
+@inherits WizardComponentBase
+
+@if (AppData.CurrentReport == null)
+    return;
+
+<div class="mb-3">
+    @foreach (var issue in TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport)) {
+        <div class="card mb-1">
+            <div class="card-body">
+                <h5 class="card-title">@issue.Severity.ToHeading()</h5>
+                <p class="card-text">@issue.Message</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                @if (issue.Severity == ReportIssueSeverity.Error) {
+                    <span>Wird wahrscheinlich zur Ablehnung führen.</span>
+                } else if (issue.Severity == ReportIssueSeverity.Warning) {
+                    <span>Kann zur Ablehnung führen</span>
+                } else if (issue.Severity == ReportIssueSeverity.Info) {
+                    <span></span>
+                }
+
+                @if (!string.IsNullOrEmpty(issue.Step)) {
+                    <a href="@issue.Step">Zur Seite springen</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="d-flex justify-content-between">
+    <div style="flex: 1;">
+        <NavLink @onclick=GoBack class="btn btn-primary">Zurück</NavLink>
+    </div>
+    <div>
+        <NavLink href="/Overview" class="btn btn-primary">Übersicht</NavLink>
+    </div>
+    <div style="flex: 1;" class="d-flex justify-content-end">
+        <NavLink href="/StepSummary" class="btn btn-primary">Weiter</NavLink>
+    </div>
+</div>

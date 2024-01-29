@@ -24,4 +24,18 @@ public class Address {
         PostCode = postCode;
         City = city;
     }
+
+    public bool IsValidAddress() {
+        if (string.IsNullOrEmpty(LocalIdentifier))
+            return false;
+        if (string.IsNullOrEmpty(HouseIdentifier))
+            return false;
+
+        if (string.IsNullOrEmpty(PostCode))
+            return false;
+        if (string.IsNullOrEmpty(City))
+            return false;
+
+        return true;
+    }
 }

@@ -2,11 +2,13 @@ using BlazorDownloadFile;
 using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
+using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.Components.Modals;
 using PirateTools.TravelExpense.WebApp.Models;
 using PirateTools.TravelExpense.WebApp.PDF;
 using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -30,7 +32,9 @@ public partial class StepSummary {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.IsDonatingAll()) {
+        if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
+            NavigationManager.NavigateTo("/StepEntryIssues");
+        } else if (AppData.CurrentReport.IsDonatingAll()) {
             NavigationManager.NavigateTo("/StepDonationSelection");
         } else {
             NavigationManager.NavigateTo("/StepBankInformationEntry");

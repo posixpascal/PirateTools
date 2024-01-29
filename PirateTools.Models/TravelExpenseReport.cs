@@ -29,6 +29,11 @@ public class TravelExpenseReport {
     public TimeOnly ArrivalTime { get; set; }
 
     [JsonIgnore]
+    public DateTime StartDateTime => new(StartDate, DepartureTime);
+    [JsonIgnore]
+    public DateTime EndDateTime => new(EndDate, ArrivalTime);
+
+    [JsonIgnore]
     public int NightsStayed => EndDate.DayNumber - StartDate.DayNumber;
 
     [JsonIgnore]

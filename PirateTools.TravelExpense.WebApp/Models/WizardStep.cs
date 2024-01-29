@@ -16,5 +16,6 @@ public enum WizardStep {
     OtherCostsOverview,
     DonationSelection, // Donate Amount Input, Checkbox "Donate All"
     BankInformationEntry,
+    EntryIssues,
     Summary
 }

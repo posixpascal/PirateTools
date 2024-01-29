@@ -6,25 +6,30 @@
 @if (AppData.CurrentReport == null)
     return;
 
-<div class="mb-3">
+<div class="row mb-3 row-cols-xl-2 row-cols-1">
     @foreach (var issue in TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport)) {
-        <div class="card mb-1">
-            <div class="card-body">
-                <h5 class="card-title">@issue.Severity.ToHeading()</h5>
-                <p class="card-text">@issue.Message</p>
-            </div>
-            <div class="card-footer d-flex justify-content-between">
-                @if (issue.Severity == ReportIssueSeverity.Error) {
-                    <span>Wird wahrscheinlich zur Ablehnung führen.</span>
-                } else if (issue.Severity == ReportIssueSeverity.Warning) {
-                    <span>Kann zur Ablehnung führen</span>
-                } else if (issue.Severity == ReportIssueSeverity.Info) {
-                    <span></span>
-                }
+        <div class="col mb-3">
+            <div class="card h-100 border-@ClassForSeverity(issue.Severity)">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="@IconForSeverity(issue.Severity) text-@ClassForSeverity(issue.Severity)"></i>
+                        @issue.Severity.ToHeading()
+                    </h5>
+                    <p class="card-text">@issue.Message</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    @if (issue.Severity == ReportIssueSeverity.Error) {
+                        <span>Wird wahrscheinlich zur Ablehnung führen.</span>
+                    } else if (issue.Severity == ReportIssueSeverity.Warning) {
+                        <span>Kann zur Ablehnung führen</span>
+                    } else if (issue.Severity == ReportIssueSeverity.Info) {
+                        <span></span>
+                    }
 
-                @if (!string.IsNullOrEmpty(issue.Step)) {
-                    <a href="@issue.Step">Zur Seite springen</a>
-                }
+                    @if (!string.IsNullOrEmpty(issue.Step)) {
+                        <a href="@issue.Step">Zur Seite springen</a>
+                    }
+                </div>
             </div>
         </div>
     }

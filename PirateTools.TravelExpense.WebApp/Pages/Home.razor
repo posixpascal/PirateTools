@@ -4,7 +4,7 @@
     return;
 }
 
-<h1 class="mb-4">Reisekostentool V0.5</h1>
+<h1 class="mb-4">Reisekostentool V0.6</h1>
 
 <div class="row mb-4">
     <div class="col">
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mb-4">
     <h2 class="mb-3">Gespeicherte Anträge</h2>
 
     @if (AppData.Config.UseLocalStorage) {
@@ -95,4 +95,21 @@
             <button @onclick=AllowLocalStorageAsync class="btn btn-primary">Lokaler Datenspeicherung zustimmen</button>
         </div>
     }
+</div>
+
+<div class="row mb-4">
+    <h2>Änderungen in V0.6</h2>
+    <h5>Neues</h5>
+    <ul>
+        <li>Aktion um einen RK-Antrag zu kopieren</li>
+        <li>Alle LVs für Benutzer eingebaut (Es fehlen noch Reisekostenordnungen für viele LVs, falls dir eine RKO und ein RK-Formular bekannt sind bitte @@joscha999 anpingen!)</li>
+        <li>Beim löschen von Benutzern und Anträgen wird um Bestätigung gebeten</li>
+        <li>"Probleme/Hinweise" Seite die auf mögliche Probleme im Antrag hinweist</li>
+        <li>Es können jetzt neben PNGs auch PDFs für Anhänge genutzt werden</li>
+    </ul>
+    <h5>Fixes</h5>
+    <ul>
+        <li>Bankdetails werden nicht mehr ins Formular geschrieben wenn alles gespendet wird</li>
+        <li>Beschluss-Datum wird leer gelassen/nicht ins Formular geschrieben bis ein Beschluss angegeben wird</li>
+    </ul>
 </div>

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PirateTools.Models\PirateTools.Models.csproj" />
+    <ProjectReference Include="..\PirateTools.Web.Common\PirateTools.Web.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

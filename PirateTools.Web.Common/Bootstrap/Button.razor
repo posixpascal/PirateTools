@@ -1,0 +1,5 @@
+﻿<button @onclick=OnClick
+        class="btn btn-@Type.ToCssClass() @(Small ? "btn-sm" : "")"
+        title="@Title">
+    @ChildContent
+</button>

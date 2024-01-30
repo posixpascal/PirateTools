@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿
+@page "/"
 
 @if (Loading) {
     return;
@@ -58,22 +59,26 @@
                 <tbody class="table-group-divider">
                     @foreach (var report in AppData.Reports.OrderBy(r => r.DepartureTime)) {
                         <tr>
-                            <td>@report.StartDate.ToString(Culture)</td>
-                            <td>@report.TravelReason</td>
-                            <td>@report.Pirate?.Name</td>
+                            <td style="vertical-align: middle;">@report.StartDate.ToString(Culture)</td>
+                            <td style="vertical-align: middle;">@report.TravelReason</td>
+                            <td style="vertical-align: middle;">@report.Pirate?.Name</td>
                             <td class="text-end">
-                                <a class="pointer pe-1" @onclick=@(() => DeleteReport(report))>
-                                    <i class="bi bi-trash-fill text-danger"></i>
-                                </a>
-                                <a class="pointer pe-1" @onclick=@(() => EditReport(report))>
-                                    <i class="bi bi-pencil-fill text-success"></i>
-                                </a>
-                                <a class="pointer pe-1" @onclick=@(() => BuildPdf(report))>
-                                    <i class="bi bi-filetype-pdf text-primary"></i>
-                                </a>
-                                <a class="pointer" @onclick=@(() => Copy(report))>
-                                    <i class="bi bi-copy text-primary"></i>
-                                </a>
+                                <Button Title="Löschen" OnClick=@(() => DeleteReport(report))
+                                        Type="BootstrapType.Danger" Small=true>
+                                    <i class="bi bi-trash-fill"></i>
+                                </Button>
+                                <Button Title="Editieren" OnClick=@(() => EditReport(report))
+                                        Type="BootstrapType.Success" Small=true>
+                                    <i class="bi bi-pencil-fill"></i>
+                                </Button>
+                                <Button Title="PDF Erstellen" OnClick=@(() => BuildPdf(report))
+                                        Type="BootstrapType.Primary" Small=true>
+                                    <i class="bi bi-filetype-pdf"></i>
+                                </Button>
+                                <Button Title="Kopieren" OnClick=@(() => Copy(report))
+                                        Type="BootstrapType.Primary" Small=true>
+                                    <i class="bi bi-copy"></i>
+                                </Button>
                             </td>
                         </tr>
                     }

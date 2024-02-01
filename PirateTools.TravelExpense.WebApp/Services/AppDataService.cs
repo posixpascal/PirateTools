@@ -124,6 +124,11 @@ public class AppDataService {
             Id = Guid.Parse("43753f21-ad43-42c2-afac-505ed14fc1ff"),
             Parent = ppde
         });
+
+        // Special Federation for people that are not Members of the Pirates but have travel costs in their name.
+        Federations.Add(new Federation("", "", "-", "Kein Verband") {
+            Id = Guid.Parse("151c4fe7-50ca-432a-8570-aa159bf4d2c3")
+        });
     }
 
     public async Task LoadDataAsync() {

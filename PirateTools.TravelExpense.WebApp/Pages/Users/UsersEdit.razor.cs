@@ -29,6 +29,9 @@ public partial class UsersEdit {
 
     protected override void OnParametersSet() {
         User = AppData.Config.Users.Find(u => u.Id == UserId);
+
+        User ??= new Pirate();
+        User.Federation ??= AppData.Federations[0]!;
     }
 
     private async Task Save() {

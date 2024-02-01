@@ -132,6 +132,7 @@ public class AppDataService {
 
         OpfsHandle = await StorageManager.GetOriginPrivateDirectoryAsync();
         await TryLoadConfigAsync();
+        FixUp();
         LoadingCompleted = true;
     }
 
@@ -223,5 +224,12 @@ public class AppDataService {
 
         Config = new();
         Reports.Clear();
+    }
+
+    private void FixUp() {
+        // Fix some users not having any Federations
+        foreach (var user in Config.Users) {
+            user.Federation ??= Federations[0];
+        }
     }
 }

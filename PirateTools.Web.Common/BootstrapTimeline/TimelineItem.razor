@@ -1,0 +1,18 @@
+﻿<div class="d-flex pb-1 position-relative">
+    <div class="d-flex justify-content-center h-100 mt-2">
+        <div style="border-radius: 50%; background-color: var(--bs-secondary-bg); width: 1.5em; height: 1.5em; border: 0.15em solid @CircleBorderColor();">
+            @if (Type == ItemType.Done) {
+                <i class="bi bi-check position-absolute" style="left: 1em; top: 0.55em;"></i>
+            } else if (Type == ItemType.Current) {
+                <i class="bi bi-pencil-fill position-absolute" style="left: 1.8em; top: 1.1em; font-size: 65%;"></i>
+            }
+        </div>
+    </div>
+    <div class="p-2 ms-2 card box-highlight pointer" @onclick=OnClick>
+        @ChildContent
+    </div>
+    @if (!IsLast) {
+        <div style="background-color: var(--bs-secondary-color); width: 0.1em; display: inline-block; position: absolute; height: 100%; left: calc(1.5em - 0.05em); top: 0.5em; z-index: -1;">
+        </div>
+    }
+</div>

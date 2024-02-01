@@ -2,3 +2,6 @@
 
 # IDE0290: Use primary constructor
 csharp_style_prefer_primary_constructors = false
+
+# BL0006: Do not use RenderTree types
+dotnet_diagnostic.BL0006.severity = none

@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Sidebar\" />
     <Folder Include="wwwroot\Resources\Fonts\" />
     <Folder Include="wwwroot\Resources\IconFonts\" />
   </ItemGroup>

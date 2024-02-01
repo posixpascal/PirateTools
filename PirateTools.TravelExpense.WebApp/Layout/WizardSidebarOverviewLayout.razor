@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+@using Models
+
+<div style="display: flex; flex-direction: row; height: 100%;">
+    @if (AppData.CurrentReport != null) {
+        <div class="p-2" style="max-width: 25%; overflow-y: auto; overflow-x: hidden;">
+            <Timeline>
+                <TimelineItem Type=@ItemTypeForStep(WizardStep.UserSelection)>
+                    <h5 class="mb-0">Benutzer</h5>
+                    <span>Auswählen ob ein existierender Benutzer genutzt werden soll oder die Daten manuell eingegeben werden.</span>
+                </TimelineItem>
+
+                @if (AppData.CurrentReport.UsedExistingUser) {
+                    <TimelineItem Type=@ItemTypeForStep(WizardStep.UserSelector)>
+                        <h5 class="mb-0">Existierenden Benutzer auswählen</h5>
+                        <span>Aktuell gewählt: @AppData.CurrentReport.Pirate?.Name</span>
+                    </TimelineItem>
+                } else {
+                    <TimelineItem Type=@ItemTypeForStep(WizardStep.UserDataEntry)>
+                        <h5 class="mb-0">Benutzerdaten editieren</h5>
+                        <span>Daten angegeben für: @AppData.CurrentReport.Pirate?.Name</span>
+                    </TimelineItem>
+                }
+
+                <TimelineItem Type=@ItemTypeForStep(WizardStep.FederationDataEntry)>
+                    <h5 class="mb-0">Verbandsdaten</h5>
+                    <span>Gewählter Verband für den gereist wurde: @AppData.CurrentReport.Federation?.FullName()</span>
+                </TimelineItem>
+
+                <TimelineItem Type=@ItemTypeForStep(WizardStep.ExpenseBaseDataEntry)>
+                    <h5 class="mb-0">Reise</h5>
+                    <span>Grunddaten der Reise.</span>
+                </TimelineItem>
+            </Timeline>
+        </div>
+    }
+
+    <div class="container" style="height: 100%;">
+        <div class="row" style="height: 100%; align-items: center;">
+            <div>
+                @Body
+            </div>
+        </div>
+    </div>
+</div>

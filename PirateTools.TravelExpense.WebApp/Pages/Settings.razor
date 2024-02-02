@@ -2,6 +2,7 @@
 
 <h1>Einstellungen</h1>
 
+<h5>Lokale Datenspeicherung</h5>
 @if (AppData.Config.UseLocalStorage) {
     <div class="d-flex justify-content-between mb-3">
         <div class="align-self-center">Die Speicherung von Daten im Browser ist aktiviert.</div>
@@ -11,6 +12,33 @@
     <div class="d-flex justify-content-between mb-3">
         <div class="align-self-center">Es werden aktuell keine Daten im Browser gespeichert.</div>
         <button class="btn btn-primary" @onclick=AllowDataStorage>Lokaler Datenspeicherung zustimmen</button>
+    </div>
+}
+
+<h5>Daten Import/Export</h5>
+@if (AppData.Config.UseLocalStorage) {
+    <div class="d-flex justify-content-between mb-1">
+        <div>Daten aus Json Importieren</div>
+        <div>
+            @if (HasValidImportFile) {
+                <span>Die Datei kann importiert werden.</span>
+            } else {
+                <span>Wähle eine valide Datei aus!</span>
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mb-3">
+        <InputFile OnChange=OnFileChanged />
+        <button class="btn btn-primary" @onclick=ImportJson disabled="@(!HasValidImportFile)">Importieren</button>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+        <div>Daten in Json Exportieren</div>
+        <button class="btn btn-primary" @onclick=ExportJson>Exportieren</button>
+    </div>
+} else {
+    <div class="mb-3">
+        <span>Das Import/Export Feature benötigt die Erlaubnis Daten lokal zu speichern!</span>
     </div>
 }
 

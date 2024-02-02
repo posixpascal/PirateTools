@@ -41,7 +41,11 @@ public partial class StepSummary {
         }
     }
 
-    private async Task BuildPDF() {
+    private async Task BuildPDF() => await Build(true);
+
+    private async Task BuildEditablePDF() => await Build(false);
+
+    private async Task Build(bool readOnly) {
         if (AppData.CurrentReport == null)
             return;
 
@@ -52,7 +56,8 @@ public partial class StepSummary {
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService, StorageManager, AppData);
+        await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService,
+            StorageManager, AppData, readOnly);
         modal.Close();
     }
 }

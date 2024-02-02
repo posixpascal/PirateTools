@@ -23,7 +23,7 @@ public static class PdfBuilder {
 
     public static async Task BuildPdfAsync(TravelExpenseReport report, FontService FontService,
         HttpClient Http, CultureInfo Culture, IBlazorDownloadFileService DownloadFileService,
-        IStorageManagerService StorageManager, AppDataService appData) {
+        IStorageManagerService StorageManager, AppDataService appData, bool readOnly = true) {
         await FontService.LoadFontAsync("OpenSans-Regular.ttf");
         await FontService.LoadFontAsync("OpenSans-Bold.ttf");
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
@@ -80,7 +80,8 @@ public static class PdfBuilder {
 
         await report.Regulation.PdfFormBuilder.BuildPdfFormAsync(form, report, Culture, actualAttachmentCount);
 
-        SetAllFieldsReadOnly(form);
+        if (readOnly)
+            SetAllFieldsReadOnly(form);
 
         await using var memoryStream = new MemoryStream();
         pdf.Save(memoryStream);

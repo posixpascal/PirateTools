@@ -246,7 +246,7 @@
     <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.AttachmentCount />
 </div>
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between mb-3">
     <div style="flex: 1;">
         <NavLink @onclick=GoBack class="btn btn-primary">Zurück</NavLink>
     </div>
@@ -255,6 +255,9 @@
     </div>
     <div style="flex: 1;" class="d-flex justify-content-end">
         <NavLink href="/" class="btn btn-primary me-1">Zur Hauptseite</NavLink>
-        <NavLink @onclick=BuildPDF class="btn btn-success">PDF Speichern</NavLink>
+        <button @onclick=BuildEditablePDF class="btn btn-warning me-1" title="Generiert die PDF, ohne die Felder zu sperren.">
+            Editierbare PDF Speichern
+        </button>
+        <button @onclick=BuildPDF class="btn btn-success">PDF Speichern</button>
     </div>
 </div>

@@ -15,6 +15,7 @@ public class TravelExpenseReport {
     public Pirate? Pirate { get; set; }
     public Federation? Federation { get; set; }
 
+    [JsonIgnore]
     public TravelExpenseRegulation Regulation { get; set; } = TravelExpenseRegulation.Default;
 
     public string Function { get; set; } = "";
@@ -51,16 +52,23 @@ public class TravelExpenseReport {
     public int NumberFullDays => Math.Max(0, NightsStayed - 1);
 
     [JsonIgnore]
-    public double ShortDaysCompensation => NumberShortDays * 14d;
+    public double ShortDaysCompensation => NumberShortDays * Regulation.ShortDaysCompensation;
 
     [JsonIgnore]
-    public double FullDaysCompensation => NumberFullDays * 28d;
+    public double FullDaysCompensation => NumberFullDays * Regulation.FullDaysCompensation;
 
     public string Destination { get; set; } = "";
 
     public Vehicle VehicleUsed { get; set; }
-    public double PublicTransitCosts { get; set; }
     public double DrivenKm { get; set; }
+
+    public double PublicTransitCosts { get; set; }
+
+    // More specific cost, used for some older Regulations
+    public double PublicTransitTrain { get; set; }
+    public double PublicTransitBusTramLRT { get; set; }
+    public double PublicTransitTaxi { get; set; }
+    public double PublicTransitOther { get; set; }
 
     public List<ImageReference> ImagePublicTransitReceipt { get; set; } = [];
     public List<ImageReference> ImageMapRoute { get; set; } = [];
@@ -159,12 +167,19 @@ public class TravelExpenseReport {
 
     public double GetVehicleOrPublicTransitCosts() {
         if (VehicleUsed == Vehicle.PublicTransit)
-            return PublicTransitCosts;
+            return GetPublicTransitCosts();
 
         if (VehicleUsed == Vehicle.Undefined)
             return 0;
 
         return CalculateDrivenCompensation();
+    }
+
+    public double GetPublicTransitCosts() {
+        if (VehicleUsed != Vehicle.PublicTransit)
+            return 0;
+
+        return PublicTransitTrain + PublicTransitBusTramLRT + PublicTransitTaxi + PublicTransitOther;
     }
 
     public string GenerateFileName(CultureInfo culture) {

@@ -97,7 +97,7 @@ löschen möchtest?"));
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService, StorageManager);
+        await PdfBuilder.BuildPdfAsync(report, FontService, Http, Culture, DownloadFileService, StorageManager, AppData);
         modal.Close();
     }
 

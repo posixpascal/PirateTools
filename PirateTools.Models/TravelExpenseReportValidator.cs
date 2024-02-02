@@ -50,7 +50,7 @@ public static class TravelExpenseReportValidator {
         var vehicleCostStep = $"StepTravelCostsVehicle/{(int)report.VehicleUsed}";
         if (report.VehicleUsed.IsPrivateVehicle() && report.DrivenKm == 0)
             yield return ReportIssue.Warning("Es wurde die Nutzung eines privaten Fahrzeugs angegeben, die gefahrene Distanz ist aber 0.", vehicleCostStep);
-        if (report.VehicleUsed == Vehicle.PublicTransit && report.PublicTransitCosts == 0)
+        if (report.VehicleUsed == Vehicle.PublicTransit && report.GetPublicTransitCosts() == 0)
             yield return ReportIssue.Warning("Es wurde die Nutzung des ÖPV angegeben, die Kosten sind aber 0.", "StepTravelCostsPublicTransit");
 
         if ((report.EndDateTime - report.StartDateTime).TotalSeconds == 0)

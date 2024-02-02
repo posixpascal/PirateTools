@@ -10,6 +10,16 @@
 <p>
     Du kannst z.B. Parkplatzkosten oder ähnliches einreichen.
 </p>
+@{
+    var locked = AppData.CurrentReport.Regulation.RequiresSpecificOtherCosts;
+}
+
+@if (locked) {
+    <p>
+        Das RKO Formular für diesen Verband bzw. diese Reise enthält keine allgemeinen Felder für Sonstige Kosten.<br />
+        Du kannst trotzdem folgende Felder benutzen.
+    </p>
+}
 
 @for (int i = 0; i < AppData.CurrentReport.OtherCosts.Count; i++) {
     var entry = AppData.CurrentReport.OtherCosts[i];
@@ -19,14 +29,14 @@
         <div class="row mb-2">
             <div class="col-8">
                 <label class="form-label">Beschreibung</label>
-                <input class="form-control" @bind=entry.Text />
+                <input class="form-control" @bind=entry.Text disabled="@locked" />
             </div>
             <div class="col-3">
                 <label class="form-label">Betrag</label>
                 <input class="form-control" type="number" min="0" @bind=entry.Cost />
             </div>
             <div class="col-1 d-flex flex-column justify-content-end">
-                <button class="btn btn-danger" @onclick=@(() => Delete(j))>X</button>
+                <button class="btn btn-danger" @onclick=@(() => Delete(j)) disabled="@locked">X</button>
             </div>
         </div>
 
@@ -38,7 +48,7 @@
 }
 
 <div class="d-flex justify-content-center mb-3">
-    <button class="btn btn-primary" @onclick=AddNew disabled="@(AppData.CurrentReport.OtherCosts.Count >= 3)">+</button>
+    <button class="btn btn-primary" @onclick=AddNew disabled="@(AppData.CurrentReport.OtherCosts.Count >= 3 || locked)">+</button>
 </div>
 
 <div class="d-flex justify-content-between">

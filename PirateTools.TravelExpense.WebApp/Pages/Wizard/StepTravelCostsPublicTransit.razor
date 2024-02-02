@@ -11,10 +11,29 @@
     Tickets für den ÖPV werden nach Beleg gewertet.
 </p>
 
-<div class="mb-3">
-    <label class="form-label">Ticketkosten</label>
-    <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitCosts />
-</div>
+@if (AppData.CurrentReport.Regulation.UseGranularPublicTransitCosts) {
+    <div class="mb-3">
+        <label class="form-label">Bahnticket</label>
+        <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitTrain />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Bus/Straßenbahn/...</label>
+        <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitBusTramLRT />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Taxifahrt</label>
+        <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitTaxi />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Anderes</label>
+        <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitOther />
+    </div>
+} else {
+    <div class="mb-3">
+        <label class="form-label">Ticketkosten</label>
+        <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitCosts />
+    </div>
+}
 
 <div class="mb-3 row row-cols-2">
     @foreach (var imgRef in AppData.CurrentReport.ImagePublicTransitReceipt) {

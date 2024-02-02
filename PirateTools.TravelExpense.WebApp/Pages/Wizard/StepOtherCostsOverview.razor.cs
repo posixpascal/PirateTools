@@ -1,4 +1,5 @@
 using PirateTools.TravelExpense.WebApp.Models;
+using PirateTools.Models;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
@@ -7,8 +8,15 @@ public partial class StepOtherCostsOverview {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.OtherCosts.Count == 0)
-            AppData.CurrentReport.OtherCosts.Add(new());
+        if (AppData.CurrentReport.OtherCosts.Count == 0) {
+            if (AppData.CurrentReport.Regulation.OtherCostTemplates.Count != 0) {
+                foreach (var template in AppData.CurrentReport.Regulation.OtherCostTemplates) {
+                    AppData.CurrentReport.OtherCosts.Add(new TravelExpenseReport.AdditionalCosts { Text = template });
+                }
+            } else {
+                AppData.CurrentReport.OtherCosts.Add(new());
+            }
+        }
 
         AppData.CurrentStep = WizardStep.OtherCostsOverview;
     }

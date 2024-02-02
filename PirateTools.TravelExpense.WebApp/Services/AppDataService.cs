@@ -1,5 +1,6 @@
 ﻿using KristofferStrube.Blazor.FileSystem;
 using PirateTools.Models;
+using PirateTools.Models.PDF;
 using PirateTools.TravelExpense.WebApp.Models;
 using PirateTools.TravelExpense.WebApp.Utility;
 using System;
@@ -39,7 +40,7 @@ public class AppDataService {
             Id = Guid.Parse("6ca8375d-0858-4ec9-a46d-0162883c8dfc"),
             TreasurerAddress = "Piratenpartei Baden-Württemberg - Gartenstrasse 32 - 72764 Reutlingen\r\nAn den Schatzmeister im Landesvorstand (schatzmeister@piratenpartei-bw.de)",
             Parent = ppde,
-            TravelExpenseRegulations = [TravelExpenseRegulation.Default]
+            TravelExpenseRegulations = [ TravelExpenseRegulation.Default ]
         });
 
         Federations.Add(new Federation("LV", "Landesverband", "BY", "Bayern") {
@@ -69,7 +70,22 @@ public class AppDataService {
 
         Federations.Add(new Federation("LV", "Landesverband", "HE", "Hessen") {
             Id = Guid.Parse("6a06d22e-7df4-417b-9954-b6bcefaab6be"),
-            Parent = ppde
+            TreasurerAddress = "Piratenpartei Hessen - Pflugstraße 9a - 10115 Berlin (Mitte)\r\nAn den Schatzmeister im Landesvorstand (schatzmeister@piratenpartei-hessen.de)",
+            Parent = ppde,
+            TravelExpenseRegulations = [
+                new TravelExpenseRegulation() {
+                    UseFile = "LVHE_1.pdf",
+                    PdfFormBuilder = new LVHE_1_PdfFormBuilder(),
+                    AvailableFrom = new DateOnly(2020, 11, 09),
+                    MotorBikeCompensation = 0.20,
+                    ShortDaysCompensation = 12,
+                    FullDaysCompensation = 24,
+                    HasFieldForResolutionID = false,
+                    RequiresSpecificOtherCosts = true,
+                    OtherCostTemplates = [ "Nebenkosten", "Parken/Telefon/..." ],
+                    UseGranularPublicTransitCosts = true
+                }
+            ]
         });
 
         Federations.Add(new Federation("LV", "Landesverband", "MV", "Mecklenburg-Vorpommern") {
@@ -163,7 +179,9 @@ public class AppDataService {
             List<TravelExpenseReport>? loadedReports = null;
             try {
                 loadedReports = JsonSerializer.Deserialize<List<TravelExpenseReport>>(await file.TextAsync());
-            } catch (Exception) {
+            } catch (Exception ex) {
+                Console.WriteLine(ex);
+
                 if (await OpfsHandle.FileExists("reports.json"))
                     await OpfsHandle.RemoveEntryAsync("reports.json");
             }
@@ -235,6 +253,16 @@ public class AppDataService {
         // Fix some users not having any Federations
         foreach (var user in Config.Users) {
             user.Federation ??= Federations[0];
+        }
+
+        foreach (var report in Reports) {
+            report.Federation = Federations.Find(f => f.Id == report.Federation?.Id) ?? Federations[0];
+
+            if (report.UsedExistingUser) {
+                var configUser = Config.Users.Find(p => p.Id == report.Pirate?.Id);
+                if (configUser != null)
+                    report.Pirate = configUser;
+            }
         }
     }
 }

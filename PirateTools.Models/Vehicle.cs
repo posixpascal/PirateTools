@@ -6,7 +6,13 @@ public enum Vehicle {
     Undefined,
     PublicTransit,
     Car,
-    Motorbike
+    Motorbike,
+    Train,
+    Bus,
+    Tram,
+    LightRail,
+    Taxi,
+    Other
 }
 
 public static class VehicleExtensions {
@@ -17,6 +23,12 @@ public static class VehicleExtensions {
             case Vehicle.Car: return "PKW";
             case Vehicle.PublicTransit: return "ÖPV";
             case Vehicle.Motorbike: return "Motorrad";
+            case Vehicle.Train: return "Zug";
+            case Vehicle.Bus: return "Bus";
+            case Vehicle.Tram: return "Straßenbahn";
+            case Vehicle.LightRail: return "Stadtbahn";
+            case Vehicle.Taxi: return "Taxi";
+            case Vehicle.Other: return "Sonstiges";
             default: return "-";
         }
     }

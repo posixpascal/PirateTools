@@ -17,6 +17,7 @@ public class Federation {
 
     public List<ChairMember> Chairs { get; set; } = [];
 
+    [JsonIgnore]
     public List<TravelExpenseRegulation> TravelExpenseRegulations { get; set; } = [];
 
     public string? TreasurerAddress { get; set; }

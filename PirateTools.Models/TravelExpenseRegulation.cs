@@ -6,7 +6,7 @@ namespace PirateTools.Models;
 
 public class TravelExpenseRegulation {
     //Base Data
-    public required string UseFile { get; set; } = "PPDE.pdf";
+    public required string UseFile { get; set; } = "PPDE_2022.pdf";
     public required DateOnly AvailableFrom { get; set; }
 
     public PdfFormBuilder PdfFormBuilder { get; set; } = new DefaultPdfFormBuilder();
@@ -28,7 +28,7 @@ public class TravelExpenseRegulation {
     public bool UseGranularPublicTransitCosts { get; set; }
 
     public static readonly TravelExpenseRegulation Default = new() {
-        UseFile = "PPDE.pdf",
+        UseFile = "PPDE_2022.pdf",
         AvailableFrom = new DateOnly(2022, 4, 1)
     };
 }

@@ -16,7 +16,7 @@ public class TravelExpenseReport {
     public Federation? Federation { get; set; }
 
     [JsonIgnore]
-    public TravelExpenseRegulation Regulation { get; set; } = TravelExpenseRegulation.Default;
+    public TravelExpenseRegulation Regulation { get; set; } = TravelExpenseRegulation.Default2022;
 
     public string Function { get; set; } = "";
     public string TravelReason { get; set; } = "";
@@ -195,7 +195,7 @@ public class TravelExpenseReport {
 
     public void FigureOutRegulation() {
         if (Federation == null || Federation.TravelExpenseRegulations.Count == 0) {
-            Regulation = TravelExpenseRegulation.Default;
+            Regulation = TravelExpenseRegulation.Default2022;
             Console.WriteLine($"Federation: {Federation?.Name ?? "null"}, " +
                 $"RegulationCount: {Federation?.TravelExpenseRegulations.Count ?? 0}");
             return;
@@ -203,8 +203,8 @@ public class TravelExpenseReport {
 
         //Find the newest regulation that fits our StartDate
         foreach (var regulation in Federation.TravelExpenseRegulations
-            .OrderByDescending(r => r.AvailableFrom)) {
-            if (regulation.AvailableFrom > StartDate)
+            .OrderByDescending(r => r.AvailableFrom.DayNumber)) {
+            if (regulation.AvailableFrom.DayNumber > StartDate.DayNumber)
                 continue;
 
             Regulation = regulation;

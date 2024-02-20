@@ -27,8 +27,14 @@ public class TravelExpenseRegulation {
 
     public bool UseGranularPublicTransitCosts { get; set; }
 
-    public static readonly TravelExpenseRegulation Default = new() {
+    public static readonly TravelExpenseRegulation Default2022 = new() {
         UseFile = "PPDE_2022.pdf",
         AvailableFrom = new DateOnly(2022, 4, 1)
+    };
+
+    public static readonly TravelExpenseRegulation Default2024 = new() {
+        UseFile = "PPDE_2024.pdf",
+        AvailableFrom = new DateOnly(2024, 1, 1),
+        MotorBikeCompensation = 0.2
     };
 }

@@ -5,7 +5,7 @@
     return;
 }
 
-<h1 class="mb-4">Reisekostentool V0.6</h1>
+<h1 class="mb-4">Reisekostentool V0.7</h1>
 
 <div class="row mb-4">
     <div class="col">
@@ -100,6 +100,25 @@
             <button @onclick=AllowLocalStorageAsync class="btn btn-primary">Lokaler Datenspeicherung zustimmen</button>
         </div>
     }
+</div>
+
+<div class="row mb-4">
+    <h2>Änderungen in V0.7</h2>
+    <h5>Neues</h5>
+    <ul>
+        <li>Buttons auf der Hauptseite/Antragsliste wurden überarbeitet und haben Tooltips.</li>
+        <li>"Kein Verband" als "virtueller" Verband damit auch Menschen die nicht Mitglied sind Anträge einreichen können.</li>
+        <li>Landesverband Hessen hinzugefügt - ihr könnt jetzt Anträge erzeugen die bei Hessen eingereicht werden müssen.</li>
+        <li>
+            Neuer Button auf der Zusammenfassung eines Antrags zum speichern der PDF ohne die Felder schreibgeschützt zu setzen.<br />
+            Im Normalfall sollte diese Funktion nicht nötig sein, falls aber eine RKO nicht exakt eingebaut ist könnt ihr damit die PDF selbst beheben.
+        </li>
+        <li>Daten Import/Export - ihr könnt eure Daten (Benutzer, Anträge) exportieren und auf einem anderen System importieren!</li>
+    </ul>
+    <h5>Fixes</h5>
+    <ul>
+        <li>Beim generieren einer PDF mit einem Benutzer der keinen Verband eingetragen hat ist die App abgestürtzt.</li>
+    </ul>
 </div>
 
 <div class="row mb-4">

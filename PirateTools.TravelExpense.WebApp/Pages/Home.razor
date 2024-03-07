@@ -56,11 +56,11 @@
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                    @foreach (var report in AppData.Reports.OrderBy(r => r.DepartureTime)) {
+                    @foreach (var report in AppData.Reports) {
                         <tr>
                             <td style="vertical-align: middle;">@report.StartDate.ToString(Culture)</td>
                             <td style="vertical-align: middle;">@report.TravelReason</td>
-                            <td style="vertical-align: middle;">@report.Pirate?.Name</td>
+                            <td style="vertical-align: middle;">@report.User?.Name</td>
                             <td class="text-end">
                                 <Button Title="Löschen" OnClick=@(() => DeleteReport(report))
                                         Type="BootstrapType.Danger" Small=true>

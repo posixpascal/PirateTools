@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-namespace PirateTools.Models;
+namespace PirateTools.Models.Legacy;
 
-public class TravelExpenseReport {
+public class TravelExpenseReport_V0 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public bool UsedExistingUser { get; set; }
@@ -84,7 +84,7 @@ public class TravelExpenseReport {
 
     [JsonIgnore]
     public double NightsStayedCompensation
-        => AccommodationType == AccommodationType.FlatRate ? (NightsStayed * 20d) : 0;
+        => AccommodationType == AccommodationType.FlatRate ? NightsStayed * 20d : 0;
 
     [JsonIgnore]
     public double CalculatedAccommodationCosts {
@@ -216,8 +216,8 @@ public class TravelExpenseReport {
     /// <summary>
     /// Clones this TravelExpenseReport but will assign a new Guid!
     /// </summary>
-    public TravelExpenseReport Clone() {
-        return new TravelExpenseReport() {
+    public TravelExpenseReport_V0 Clone() {
+        return new TravelExpenseReport_V0() {
             Id = Guid.NewGuid(),
             StartDate = StartDate,
             EndDate = EndDate,

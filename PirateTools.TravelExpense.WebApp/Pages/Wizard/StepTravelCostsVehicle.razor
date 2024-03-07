@@ -1,9 +1,8 @@
-﻿@page "/StepTravelCostsVehicle/{VehicleUsedInt:int}"
-@using PirateTools.Models
+﻿@using PirateTools.Models
 @layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 
@@ -14,19 +13,19 @@
     Benutze hierfür deinen favorisierten Routenservice um die gefahrenen km zu finden.
 </p>
 
-<div class="mb-3">
+@* <div class="mb-3">
     <label class="form-label">Gesamte gefahrene Strecke in Km</label>
     <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.DrivenKm />
-</div>
+</div> *@
 
 <div class="mb-3 row row-cols-2">
-    @foreach (var imgRef in AppData.CurrentReport.ImageMapRoute) {
+@*     @foreach (var imgRef in AppData.CurrentReport.ImageMapRoute) {
         <div class="col h-100 mb-3">
             <FileUploadComponent ImageRef="imgRef"
                                  Title="Bild der Strecke hinzufügen"
                                  OnRemoveChoiceClicked=OnRemoveClicked />
         </div>
-    }
+    } *@
 
     <div class="col mb-3">
         <div class="card h-100 pointer box-highlight" @onclick=AddEntry>

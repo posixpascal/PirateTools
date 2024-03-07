@@ -10,15 +10,15 @@
                     <span>Auswählen ob ein existierender Benutzer genutzt werden soll oder die Daten manuell eingegeben werden.</span>
                 </TimelineItem>
 
-                @if (AppData.CurrentReport.UsedExistingUser) {
+                @if (AppData.CurrentReport.TryGetMeta("pirateId", out var usedExisting)) {
                     <TimelineItem Type=@ItemTypeForStep(WizardStep.UserSelector)>
                         <h5 class="mb-0">Existierenden Benutzer auswählen</h5>
-                        <span>Aktuell gewählt: @AppData.CurrentReport.Pirate?.Name</span>
+                        <span>Aktuell gewählt: @AppData.CurrentReport.User?.Name</span>
                     </TimelineItem>
                 } else {
                     <TimelineItem Type=@ItemTypeForStep(WizardStep.UserDataEntry)>
                         <h5 class="mb-0">Benutzerdaten editieren</h5>
-                        <span>Daten angegeben für: @AppData.CurrentReport.Pirate?.Name</span>
+                        <span>Daten angegeben für: @AppData.CurrentReport.User?.Name</span>
                     </TimelineItem>
                 }
 

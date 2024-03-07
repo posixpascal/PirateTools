@@ -1,8 +1,7 @@
-﻿@page "/StepUserDataEntry"
-@layout VerticalCenterLayout
+﻿@layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 
@@ -10,15 +9,15 @@
 
 <div class="mb-3">
     <label class="form-label">Name</label>
-    <input class="form-control" @bind=AppData.CurrentReport.Pirate.Name />
+    <input class="form-control" @bind=AppData.CurrentReport.User.Name />
 </div>
 <div class="mb-3">
     <label class="form-label">Mitgliedsnummer</label>
-    <input class="form-control" type="number" min="0" step="1" @bind=AppData.CurrentReport.Pirate.MemberID />
+    <input class="form-control" type="number" min="0" step="1" @bind=AppData.CurrentReport.User.MemberID />
 </div>
 <div class="mb-3">
     <label class="form-label">E-Mail (optional)</label>
-    <input class="form-control" type="email" @bind=AppData.CurrentReport.Pirate.EMail />
+    <input class="form-control" type="email" @bind=AppData.CurrentReport.User.EMail />
 </div>
 <div class="mb-3">
     <label class="form-label">Landesverband</label>
@@ -35,13 +34,13 @@
     <div class="col-9">
         <div class="mb-3">
             <label class="form-label">Straße</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.LocalIdentifier />
+            <input class="form-control" @bind=AppData.CurrentReport.User.Address.LocalIdentifier />
         </div>
     </div>
     <div class="col-3">
         <div class="mb-3">
             <label class="form-label">Hausnummer</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.HouseIdentifier />
+            <input class="form-control" @bind=AppData.CurrentReport.User.Address.HouseIdentifier />
         </div>
     </div>
 </div>
@@ -50,13 +49,13 @@
     <div class="col-3">
         <div class="mb-3">
             <label class="form-label">Postleitzahl</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.PostCode />
+            <input class="form-control" @bind=AppData.CurrentReport.User.Address.PostCode />
         </div>
     </div>
     <div class="col-9">
         <div class="mb-3">
             <label class="form-label">Ort</label>
-            <input class="form-control" @bind=AppData.CurrentReport.Pirate.Address.City />
+            <input class="form-control" @bind=AppData.CurrentReport.User.Address.City />
         </div>
     </div>
 </div>

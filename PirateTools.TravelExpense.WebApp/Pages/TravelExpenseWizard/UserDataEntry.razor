@@ -1,0 +1,65 @@
+﻿@page "/TravelExpenseWizard/UserDataEntry"
+@inherits WizardComponentBase
+
+@if (Report == null || Report.User == null || Report.User.Federation == null || Report.User.Address == null) {
+    <SpinnerComponent />
+    return;
+}
+
+
+<TravelExpenseWizardHeader Step="TravelExpenseWizardStep.UserSelection">
+    <Title>Benutzerdaten</Title>
+</TravelExpenseWizardHeader>
+
+<div class="mb-3">
+    <label class="form-label">Name</label>
+    <input class="form-control" @bind=Report.User.Name />
+</div>
+<div class="mb-3">
+    <label class="form-label">Mitgliedsnummer</label>
+    <input class="form-control" type="number" min="0" step="1" @bind=Report.User.MemberID />
+</div>
+<div class="mb-3">
+    <label class="form-label">E-Mail (optional)</label>
+    <input class="form-control" type="email" @bind=Report.User.EMail />
+</div>
+<div class="mb-3">
+    <label class="form-label">Landesverband</label>
+    <select class="form-select" @bind=SelectedFedeationId>
+        @foreach (var federation in AppData.Federations) {
+            <option value=@federation.Id>@federation.FullName()</option>
+        }
+    </select>
+</div>
+
+<h1>Adresse</h1>
+
+<div class="row">
+    <div class="col-9">
+        <div class="mb-3">
+            <label class="form-label">Straße</label>
+            <input class="form-control" @bind=Report.User.Address.LocalIdentifier />
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="mb-3">
+            <label class="form-label">Hausnummer</label>
+            <input class="form-control" @bind=Report.User.Address.HouseIdentifier />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-3">
+        <div class="mb-3">
+            <label class="form-label">Postleitzahl</label>
+            <input class="form-control" @bind=Report.User.Address.PostCode />
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="mb-3">
+            <label class="form-label">Ort</label>
+            <input class="form-control" @bind=Report.User.Address.City />
+        </div>
+    </div>
+</div>

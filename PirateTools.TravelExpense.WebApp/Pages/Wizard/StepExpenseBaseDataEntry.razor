@@ -1,8 +1,7 @@
-﻿@page "/StepExpenseBaseDataEntry"
-@layout VerticalCenterLayout
+﻿@layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 
@@ -18,7 +17,7 @@
     <input class="form-control" @bind=AppData.CurrentReport.Destination />
 </div>
 
-@if (AppData.CurrentReport.Regulation.HasFieldForResolutionID) {
+@* @if (AppData.CurrentReport.Regulation.HasFieldForResolutionID) {
     <div class="row">
         <div class="col-9">
             <div class="mb-3">
@@ -35,7 +34,7 @@
             </div>
         </div>
     </div>
-}
+} *@
 
 <h1>Zeiten</h1>
 
@@ -58,13 +57,13 @@
     <div class="col-6">
         <div class="mb-3">
             <label class="form-label">Abreisezeit</label>
-            <input class="form-control" type="time" @bind=AppData.CurrentReport.DepartureTime />
+            <input class="form-control" type="time" />
         </div>
     </div>
     <div class="col-6">
         <div class="mb-3">
             <label class="form-label">Ankunftszeit</label>
-            <input class="form-control" type="time" @bind=AppData.CurrentReport.ArrivalTime />
+            <input class="form-control" type="time" />
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ using System.Text;
 using Blazored.Modal.Services;
 using PirateTools.TravelExpense.WebApp.Components.Modals;
 using System;
+using PirateTools.Models.Legacy;
 
 namespace PirateTools.TravelExpense.WebApp.Pages;
 
@@ -25,7 +26,7 @@ public partial class Settings {
     public required IModalService ModalService { get; set; }
 
     private bool HasValidImportFile;
-    private ExportData? ImportData;
+    private ExportData_V0? ImportData;
 
     protected override void OnParametersSet() {
         if (!AppData.LoadingCompleted) {
@@ -47,16 +48,16 @@ public partial class Settings {
         if (ImportData == null)
             return;
 
-        AppData.Config.Users = ImportData.Users;
-        AppData.Reports = ImportData.Reports;
+        //AppData.Config.Users = ImportData.Users;
+        //AppData.Reports = ImportData.Reports;
 
-        await AppData.SaveConfigAsync();
-        await AppData.SaveReports();
-        NavigationManager.NavigateTo("/");
+        //await AppData.SaveConfigAsync();
+        //await AppData.SaveReports();
+        //NavigationManager.NavigateTo("/");
     }
 
     private async Task ExportJson() {
-        var data = new ExportData {
+        var data = new ExportData_V1 {
             Users = AppData.Config.Users,
             Reports = AppData.Reports
         };
@@ -83,7 +84,7 @@ public partial class Settings {
                 .Add(nameof(SpinnerModal.Title), "Daten werden gelesen"));
 
             var readStream = e.File.OpenReadStream(11_000_000);
-            ImportData = await JsonSerializer.DeserializeAsync<ExportData>(readStream);
+            ImportData = await JsonSerializer.DeserializeAsync<ExportData_V0>(readStream);
             HasValidImportFile = true;
         } catch (Exception ex) {
             Console.WriteLine(ex);
@@ -92,8 +93,13 @@ public partial class Settings {
         modal?.Close();
     }
 
-    private class ExportData {
+    private class ExportData_V0 {
         public List<Pirate> Users { get; set; } = [];
-        public List<TravelExpenseReport> Reports { get; set; } = [];
+        public List<TravelExpenseReport_V0> Reports { get; set; } = [];
+    }
+
+    private class ExportData_V1 {
+        public List<Pirate> Users { get; set; } = [];
+        public List<TravelExpenseReport_V1> Reports { get; set; } = [];
     }
 }

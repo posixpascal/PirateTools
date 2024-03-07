@@ -5,6 +5,7 @@ using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.AcroForms;
 using PdfSharpCore.Pdf.IO;
 using PirateTools.Models;
+using PirateTools.Models.Legacy;
 using PirateTools.TravelExpense.WebApp.Services;
 using PirateTools.TravelExpense.WebApp.Utility;
 using System;
@@ -21,7 +22,7 @@ public static class PdfBuilder {
 
     private static readonly byte[] AttachmentBuffer = new byte[5_000_000];
 
-    public static async Task BuildPdfAsync(TravelExpenseReport report, FontService FontService,
+    public static async Task BuildPdfAsync(TravelExpenseReport_V1 report, FontService FontService,
         HttpClient Http, CultureInfo Culture, IBlazorDownloadFileService DownloadFileService,
         IStorageManagerService StorageManager, AppDataService appData, bool readOnly = true) {
         await FontService.LoadFontAsync("OpenSans-Regular.ttf");
@@ -30,55 +31,55 @@ public static class PdfBuilder {
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
         report.Federation = appData.Federations.Find(f => f.Id == report.Federation?.Id);
-        report.FigureOutRegulation();
+        //report.FigureOutRegulation();
 
-        if (report.UsedExistingUser)
-            report.Pirate = appData.Config.Users.Find(p => p.Id == report.Pirate!.Id);
+        //if (report.UsedExistingUser)
+        //    report.Pirate = appData.Config.Users.Find(p => p.Id == report.Pirate!.Id);
 
-        var data = await Http.GetStreamAsync("Resources/TravelExpensePDFs/" + report.Regulation.UseFile);
+        var data = await Http.GetStreamAsync("Resources/TravelExpensePDFs/" + "");
         var pdf = PdfReader.Open(data);
         var form = pdf.AcroForm;
 
         if (pdf.PageCount > 1)
             pdf.Pages.RemoveAt(1);
 
-        var actualAttachmentCount = report.AttachmentCount;
+        //var actualAttachmentCount = report.AttachmentCount;
 
-        if (report.VehicleUsed.IsPrivateVehicle()) {
-            foreach (var imgRef in report.ImageMapRoute) {
-                if (!imgRef.IsSet)
-                    continue;
+        //if (report.VehicleUsed.IsPrivateVehicle()) {
+        //    foreach (var imgRef in report.ImageMapRoute) {
+        //        if (!imgRef.IsSet)
+        //            continue;
 
-                actualAttachmentCount++;
-                await AddAttachment(pdf, imgRef.FileName, StorageManager,
-                    $"Anlage #{actualAttachmentCount}: Route für die Fahrt mit einem privaten Fahrzeug");
-            }
-        }
+        //        actualAttachmentCount++;
+        //        await AddAttachment(pdf, imgRef.FileName, StorageManager,
+        //            $"Anlage #{actualAttachmentCount}: Route für die Fahrt mit einem privaten Fahrzeug");
+        //    }
+        //}
 
-        if (report.VehicleUsed == Vehicle.PublicTransit) {
-            foreach (var imgRef in report.ImagePublicTransitReceipt) {
-                if (!imgRef.IsSet)
-                    continue;
+        //if (report.VehicleUsed == Vehicle.PublicTransit) {
+        //    foreach (var imgRef in report.ImagePublicTransitReceipt) {
+        //        if (!imgRef.IsSet)
+        //            continue;
 
-                actualAttachmentCount++;
-                await AddAttachment(pdf, imgRef.FileName, StorageManager,
-                    $"Anlage #{actualAttachmentCount}: Beleg für das ÖPV Ticket");
-            }
-        }
+        //        actualAttachmentCount++;
+        //        await AddAttachment(pdf, imgRef.FileName, StorageManager,
+        //            $"Anlage #{actualAttachmentCount}: Beleg für das ÖPV Ticket");
+        //    }
+        //}
 
-        foreach (var entry in report.OtherCosts) {
-            if (entry.ImageReceipt == null)
-                continue;
+        //foreach (var entry in report.OtherCosts) {
+        //    if (entry.ImageReceipt == null)
+        //        continue;
 
-            if (!entry.ImageReceipt.IsSet)
-                continue;
+        //    if (!entry.ImageReceipt.IsSet)
+        //        continue;
 
-            actualAttachmentCount++;
-            await AddAttachment(pdf, entry.ImageReceipt.FileName, StorageManager,
-                $"Anlage #{actualAttachmentCount}: Beleg für Sonstige Kosten \"{entry.Text}\"");
-        }
+        //    actualAttachmentCount++;
+        //    await AddAttachment(pdf, entry.ImageReceipt.FileName, StorageManager,
+        //        $"Anlage #{actualAttachmentCount}: Beleg für Sonstige Kosten \"{entry.Text}\"");
+        //}
 
-        await report.Regulation.PdfFormBuilder.BuildPdfFormAsync(form, report, Culture, actualAttachmentCount);
+        //await report.Regulation.PdfFormBuilder.BuildPdfFormAsync(form, report, Culture, actualAttachmentCount);
 
         if (readOnly)
             SetAllFieldsReadOnly(form);

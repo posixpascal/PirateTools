@@ -5,6 +5,10 @@ using System.Text.Json.Serialization;
 namespace PirateTools.Models;
 
 public class Federation {
+    public static Federation None { get; } = new Federation("", "", "-", "Kein Verband") {
+        Id = Guid.Parse("151c4fe7-50ca-432a-8570-aa159bf4d2c3")
+    };
+
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public string ShortType { get; set; }

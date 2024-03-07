@@ -22,7 +22,7 @@ public class WizardComponentBase : ComponentBase {
             return;
         }
 
-        AppData.CurrentReport.FigureOutRegulation();
+        //AppData.CurrentReport.FigureOutRegulation();
         await AppData.SaveReports();
     }
 }

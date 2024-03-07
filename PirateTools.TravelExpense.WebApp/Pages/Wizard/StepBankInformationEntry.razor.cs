@@ -6,17 +6,17 @@ namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepBankInformationEntry {
     protected override void OnParametersSet() {
-        AppData.CurrentStep = WizardStep.BankInformationEntry;
+        //AppData.CurrentStep = WizardStep.BankInformationEntry;
     }
 
     private void GoNext() {
         if (AppData.CurrentReport == null)
             return;
 
-        if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
+        //if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
             NavigationManager.NavigateTo("/StepEntryIssues");
-        } else {
-            NavigationManager.NavigateTo("/StepSummary");
-        }
+        //} else {
+        //    NavigationManager.NavigateTo("/StepSummary");
+        //}
     }
 }

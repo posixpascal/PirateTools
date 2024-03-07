@@ -1,8 +1,7 @@
-﻿@page "/StepTravelCostsPublicTransit"
-@layout VerticalCenterLayout
+﻿@layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 
@@ -11,7 +10,7 @@
     Tickets für den ÖPV werden nach Beleg gewertet.
 </p>
 
-@if (AppData.CurrentReport.Regulation.UseGranularPublicTransitCosts) {
+@* @if (AppData.CurrentReport.Regulation.UseGranularPublicTransitCosts) {
     <div class="mb-3">
         <label class="form-label">Bahnticket</label>
         <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitTrain />
@@ -33,16 +32,16 @@
         <label class="form-label">Ticketkosten</label>
         <input class="form-control" type="number" min="0" @bind=AppData.CurrentReport.PublicTransitCosts />
     </div>
-}
+} *@
 
 <div class="mb-3 row row-cols-2">
-    @foreach (var imgRef in AppData.CurrentReport.ImagePublicTransitReceipt) {
+@*     @foreach (var imgRef in AppData.CurrentReport.ImagePublicTransitReceipt) {
         <div class="col h-100 mb-3">
             <FileUploadComponent ImageRef="imgRef"
                                  Title="Bild/PDF des Belegs hinzufügen"
                                  OnRemoveChoiceClicked=OnRemoveClicked />
         </div>
-    }
+    } *@
 
     <div class="col mb-3">
         <div class="card h-100 pointer box-highlight" @onclick=AddEntry>

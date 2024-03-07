@@ -2,7 +2,7 @@ using Blazored.Modal;
 using Blazored.Modal.Services;
 using KristofferStrube.Blazor.FileSystem;
 using Microsoft.AspNetCore.Components;
-using PirateTools.Models;
+using PirateTools.Models.Legacy;
 using PirateTools.TravelExpense.WebApp.Components.Modals;
 using PirateTools.TravelExpense.WebApp.Services;
 using System.Threading.Tasks;
@@ -18,14 +18,14 @@ public partial class FileUploadComponent {
     public required IStorageManagerService StorageManager { get; set; }
 
     [Parameter]
-    public required TravelExpenseReport.ImageReference ImageRef { get; set; }
+    public required TravelExpenseReport_V0.ImageReference ImageRef { get; set; }
     [Parameter]
     public required string Title { get; set; }
 
     [Parameter]
     public long MaxFileSize { get; set; } = 4_194_304;
     [Parameter]
-    public EventCallback<TravelExpenseReport.ImageReference> OnRemoveChoiceClicked { get; set; }
+    public EventCallback<TravelExpenseReport_V0.ImageReference> OnRemoveChoiceClicked { get; set; }
 
     private async Task AllowLocalStorage() {
         AppData.Config.UseLocalStorage = true;

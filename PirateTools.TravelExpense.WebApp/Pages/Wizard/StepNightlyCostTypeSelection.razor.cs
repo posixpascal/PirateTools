@@ -7,20 +7,20 @@ namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepNightlyCostTypeSelection {
     protected override void OnParametersSet() {
-        AppData.CurrentStep = WizardStep.NightlyCostTypeSelection;
+        //AppData.CurrentStep = WizardStep.NightlyCostTypeSelection;
     }
 
     private void GoBack() {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.VehicleUsed == Vehicle.PublicTransit) {
+        //if (AppData.CurrentReport.VehicleUsed == Vehicle.PublicTransit) {
             NavigationManager.NavigateTo("/StepTravelCostsPublicTransit");
-        } else if (AppData.CurrentReport.VehicleUsed == Vehicle.Undefined) {
-            NavigationManager.NavigateTo("/StepTravelTypeSelection");
-        } else {
-            NavigationManager.NavigateTo("/StepTravelCostsVehicle/" + (int)AppData.CurrentReport.VehicleUsed);
-        }
+        //} else if (AppData.CurrentReport.VehicleUsed == Vehicle.Undefined) {
+        //    NavigationManager.NavigateTo("/StepTravelTypeSelection");
+        //} else {
+        //    NavigationManager.NavigateTo("/StepTravelCostsVehicle/" + (int)AppData.CurrentReport.VehicleUsed);
+        //}
     }
 
     private void TypeSpecified() => SelectType(AccommodationType.Specified, "/StepNightlyCostExact");
@@ -33,7 +33,7 @@ public partial class StepNightlyCostTypeSelection {
         if (AppData.CurrentReport == null)
             return;
 
-        AppData.CurrentReport.AccommodationType = type;
+        //AppData.CurrentReport.AccommodationType = type;
         NavigationManager.NavigateTo(navRoute);
     }
 }

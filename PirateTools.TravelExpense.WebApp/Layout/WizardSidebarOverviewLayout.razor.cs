@@ -10,11 +10,11 @@ public partial class WizardSidebarOverviewLayout {
     public required AppDataService AppData { get; set; }
 
     private TimelineItem.ItemType ItemTypeForStep(WizardStep step) {
-        if (AppData.CurrentStep == step)
-            return TimelineItem.ItemType.Current;
+        //if (AppData.CurrentStep == step)
+        //    return TimelineItem.ItemType.Current;
 
-        if (AppData.CurrentStep > step)
-            return TimelineItem.ItemType.Done;
+        //if (AppData.CurrentStep > step)
+        //    return TimelineItem.ItemType.Done;
 
         return TimelineItem.ItemType.Todo;
     }

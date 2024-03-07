@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 using BlazorDownloadFile;
 using PirateTools.TravelExpense.WebApp.Services;
 using System.Globalization;
-using PirateTools.Models;
 using PirateTools.TravelExpense.WebApp.PDF;
 using Blazored.Modal.Services;
 using Blazored.Modal;
 using PirateTools.TravelExpense.WebApp.Components.Modals;
 using System.Security.Cryptography;
 using System;
+using PirateTools.Models.Legacy;
+using PirateTools.Models;
+using PirateTools.TravelExpense.WebApp.Models;
 
 namespace PirateTools.TravelExpense.WebApp.Pages;
 
@@ -61,7 +63,7 @@ public partial class Home {
         AppData.CurrentReport = new();
         AppData.Reports.Add(AppData.CurrentReport);
 
-        NavigationManager.NavigateTo("/StepUserSelection");
+        NavigationManager.NavigateTo(TravelExpenseWizardStep.UserSelection.ToPage());
     }
 
     private void UserManagement() {
@@ -71,7 +73,7 @@ public partial class Home {
         NavigationManager.NavigateTo("/Users/List");
     }
 
-    private async Task DeleteReport(TravelExpenseReport report) {
+    private async Task DeleteReport(TravelExpenseReport_V1 report) {
         var modal = ModalService.Show<DeleteConfirmModal>("", new ModalParameters()
             .Add(nameof(DeleteConfirmModal.CustomMessage), $@"Bist du sicher das du den Reisekostenantrag
 vom {report.StartDate.ToString(Culture)}, für die Reise '{report.TravelReason}' nach '{report.Destination}',
@@ -84,12 +86,12 @@ löschen möchtest?"));
         }
     }
 
-    private void EditReport(TravelExpenseReport report) {
+    private void EditReport(TravelExpenseReport_V1 report) {
         AppData.CurrentReport = report;
         NavigationManager.NavigateTo("/Overview");
     }
 
-    private async Task BuildPdf(TravelExpenseReport report) {
+    private async Task BuildPdf(TravelExpenseReport_V1 report) {
         var modal = ModalService.Show<SpinnerModal>("", new ModalParameters()
             .Add(nameof(SpinnerModal.Title), "PDF wird erstellt"));
         await FontService.LoadFontAsync("OpenSans-Regular.ttf");
@@ -101,12 +103,12 @@ löschen möchtest?"));
         modal.Close();
     }
 
-    private async Task Copy(TravelExpenseReport report) {
-        var newReport = report.Clone();
-        AppData.CurrentReport = report;
-        AppData.Reports.Add(newReport);
-        await AppData.SaveReports();
+    private async Task Copy(TravelExpenseReport_V1 report) {
+        //var newReport = report.Clone();
+        //AppData.CurrentReport = report;
+        //AppData.Reports.Add(newReport);
+        //await AppData.SaveReports();
 
-        NavigationManager.NavigateTo("/StepFederationDataEntry");
+        //NavigationManager.NavigateTo("/StepFederationDataEntry");
     }
 }

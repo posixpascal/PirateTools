@@ -1,10 +1,13 @@
 ﻿using KristofferStrube.Blazor.FileSystem;
 using PirateTools.Models;
+using PirateTools.Models.Legacy;
+using PirateTools.Models.Migrations;
 using PirateTools.Models.PDF;
 using PirateTools.TravelExpense.WebApp.Models;
 using PirateTools.TravelExpense.WebApp.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -13,10 +16,9 @@ namespace PirateTools.TravelExpense.WebApp.Services;
 public class AppDataService {
     public bool LoadingCompleted { get; private set; }
 
-    public TravelExpenseReport? CurrentReport { get; set; }
-    public WizardStep CurrentStep { get; set; }
+    public TravelExpenseReport_V1? CurrentReport { get; set; }
 
-    public List<TravelExpenseReport> Reports { get; set; } = [];
+    public List<TravelExpenseReport_V1> Reports { get; set; } = [];
 
     public AppConfig Config { get; set; } = new();
 
@@ -148,9 +150,7 @@ public class AppDataService {
         });
 
         // Special Federation for people that are not Members of the Pirates but have travel costs in their name.
-        Federations.Add(new Federation("", "", "-", "Kein Verband") {
-            Id = Guid.Parse("151c4fe7-50ca-432a-8570-aa159bf4d2c3")
-        });
+        Federations.Add(Federation.None);
     }
 
     public async Task LoadDataAsync() {
@@ -158,12 +158,12 @@ public class AppDataService {
             return;
 
         OpfsHandle = await StorageManager.GetOriginPrivateDirectoryAsync();
-        await TryLoadConfigAsync();
+        await TryLoadDataAsync();
         FixUp();
         LoadingCompleted = true;
     }
 
-    private async Task TryLoadConfigAsync() {
+    private async Task TryLoadDataAsync() {
         if (OpfsHandle == null) {
             Console.WriteLine("TryLoadConfigAsync: OpfsHandle is null");
             return;
@@ -182,24 +182,31 @@ public class AppDataService {
             var reportsHandle = await OpfsHandle.GetFileHandleAsync("reports.json");
             var file = await reportsHandle.GetFileAsync();
 
-            List<TravelExpenseReport>? loadedReports = null;
             try {
-                loadedReports = JsonSerializer.Deserialize<List<TravelExpenseReport>>(await file.TextAsync());
+                if (Config.TravelExpenseReportVersion == 0) {
+                    var reports = JsonSerializer.Deserialize<List<TravelExpenseReport_V0>>(await file.TextAsync());
+
+                    if (reports != null)
+                        Reports = reports.ConvertAll(TravelExpenseReport_V0_V1_Migration.MigrateUp);
+                } else if (Config.TravelExpenseReportVersion == 1) {
+                    var reports = JsonSerializer.Deserialize<List<TravelExpenseReport_V1>>(await file.TextAsync());
+
+                    if (reports != null)
+                        Reports = reports;
+                } else {
+                    Console.WriteLine($"Unknown TravelExpenseReportVersion: {Config.TravelExpenseReportVersion}");
+                }
             } catch (Exception ex) {
                 Console.WriteLine(ex);
-
-                if (await OpfsHandle.FileExists("reports.json"))
-                    await OpfsHandle.RemoveEntryAsync("reports.json");
             }
-
-            if (loadedReports != null)
-                Reports = loadedReports;
         }
     }
 
     public async Task SaveConfigAsync() {
         if (!Config.UseLocalStorage || OpfsHandle == null)
             return;
+
+        Config.TravelExpenseReportVersion = 1;
 
         if (await OpfsHandle.FileExists("config.json"))
             await OpfsHandle.RemoveEntryAsync("config.json");
@@ -259,16 +266,6 @@ public class AppDataService {
         // Fix some users not having any Federations
         foreach (var user in Config.Users) {
             user.Federation ??= Federations[0];
-        }
-
-        foreach (var report in Reports) {
-            report.Federation = Federations.Find(f => f.Id == report.Federation?.Id) ?? Federations[0];
-
-            if (report.UsedExistingUser) {
-                var configUser = Config.Users.Find(p => p.Id == report.Pirate?.Id);
-                if (configUser != null)
-                    report.Pirate = configUser;
-            }
         }
     }
 }

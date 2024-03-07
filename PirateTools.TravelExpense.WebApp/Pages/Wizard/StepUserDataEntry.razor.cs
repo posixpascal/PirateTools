@@ -5,12 +5,12 @@ namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
 
 public partial class StepUserDataEntry {
     private Guid SelectedFedeationId {
-        get => AppData.CurrentReport?.Pirate?.Federation?.Id ?? Guid.Empty;
+        get => AppData.CurrentReport?.User?.Federation?.Id ?? Guid.Empty;
         set {
-            if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null)
+            if (AppData.CurrentReport == null || AppData.CurrentReport.User == null)
                 return;
 
-            AppData.CurrentReport.Pirate.Federation = AppData.Federations.Find(f => f.Id == value)!;
+            AppData.CurrentReport.User.Federation = AppData.Federations.Find(f => f.Id == value)!;
         }
     }
 
@@ -18,15 +18,15 @@ public partial class StepUserDataEntry {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.Pirate == null) {
-            AppData.CurrentReport.Pirate = new();
-            AppData.CurrentReport.Pirate.Address = new();
+        if (AppData.CurrentReport.User == null) {
+            AppData.CurrentReport.User = new();
+            AppData.CurrentReport.User.Address = new();
         }
 
-        if (AppData.CurrentReport.Pirate.Federation == null)
-            AppData.CurrentReport.Pirate.Federation = AppData.Federations[0];
+        if (AppData.CurrentReport.User.Federation == null)
+            AppData.CurrentReport.User.Federation = AppData.Federations[0];
 
-        AppData.CurrentReport.UsedExistingUser = false;
-        AppData.CurrentStep = WizardStep.UserDataEntry;
+        //AppData.CurrentReport.UsedExistingUser = false;
+        //AppData.CurrentStep = WizardStep.UserDataEntry;
     }
 }

@@ -1,8 +1,7 @@
-﻿@page "/StepOtherCostsOverview"
-@layout VerticalCenterLayout
+﻿@layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 
@@ -11,7 +10,7 @@
     Du kannst z.B. Parkplatzkosten oder ähnliches einreichen.
 </p>
 @{
-    var locked = AppData.CurrentReport.Regulation.RequiresSpecificOtherCosts;
+    var locked = false; // AppData.CurrentReport.Regulation.RequiresSpecificOtherCosts;
 }
 
 @if (locked) {
@@ -21,7 +20,7 @@
     </p>
 }
 
-@for (int i = 0; i < AppData.CurrentReport.OtherCosts.Count; i++) {
+@* @for (int i = 0; i < AppData.CurrentReport.OtherCosts.Count; i++) {
     var entry = AppData.CurrentReport.OtherCosts[i];
     var j = i;
 
@@ -45,11 +44,11 @@
                                  Title="Bild/PDF des Belegs hinzufügen" />
         </div>
     </div>
-}
+} *@
 
-<div class="d-flex justify-content-center mb-3">
+@* <div class="d-flex justify-content-center mb-3">
     <button class="btn btn-primary" @onclick=AddNew disabled="@(AppData.CurrentReport.OtherCosts.Count >= 3 || locked)">+</button>
-</div>
+</div> *@
 
 <div class="d-flex justify-content-between">
     <div style="flex: 1;">

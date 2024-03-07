@@ -7,4 +7,6 @@ public class AppConfig {
     public bool UseLocalStorage { get; set; }
 
     public List<Pirate> Users { get; set; } = [];
+
+    public int TravelExpenseReportVersion { get; set; }
 }

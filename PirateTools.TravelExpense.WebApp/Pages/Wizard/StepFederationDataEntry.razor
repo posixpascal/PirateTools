@@ -1,8 +1,7 @@
-﻿@page "/StepFederationDataEntry"
-@layout VerticalCenterLayout
+﻿@layout VerticalCenterLayout
 @inherits WizardComponentBase
 
-@if (AppData.CurrentReport == null || AppData.CurrentReport.Pirate == null) {
+@if (AppData.CurrentReport == null || AppData.CurrentReport.User == null) {
     return;
 }
 

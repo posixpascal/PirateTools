@@ -1,4 +1,5 @@
 ﻿using PdfSharpCore.Pdf.AcroForms;
+using PirateTools.Models.Legacy;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 namespace PirateTools.Models.PDF;
 
 public class LVHE_1_PdfFormBuilder : PdfFormBuilder {
-    public override Task BuildPdfFormAsync(PdfAcroForm form, TravelExpenseReport report,
+    public override Task BuildPdfFormAsync(PdfAcroForm form, TravelExpenseReport_V0 report,
         CultureInfo culture, int attachmentCount) {
         if (report.Pirate != null) {
             SetField(form, "Name", report.Pirate.Name);

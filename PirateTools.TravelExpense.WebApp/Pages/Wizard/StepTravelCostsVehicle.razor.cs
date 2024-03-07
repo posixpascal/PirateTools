@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using PirateTools.Models;
+using PirateTools.Models.Legacy;
 using PirateTools.TravelExpense.WebApp.Models;
 using System;
 using System.Globalization;
@@ -18,29 +19,29 @@ public partial class StepTravelCostsVehicle {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.ImageMapRoute.Count == 0)
-            AppData.CurrentReport.ImageMapRoute.Add(new());
+        //if (AppData.CurrentReport.ImageMapRoute.Count == 0)
+        //    AppData.CurrentReport.ImageMapRoute.Add(new());
 
-        AppData.CurrentStep = WizardStep.TravelCostsVehicle;
-        AppData.CurrentReport.VehicleUsed = VehicleUsed;
+        //AppData.CurrentStep = WizardStep.TravelCostsVehicle;
+        //AppData.CurrentReport.VehicleUsed = VehicleUsed;
     }
 
     private double GetFactor() {
         if (AppData.CurrentReport == null)
             return 0.3;
 
-        return VehicleUsed == Vehicle.Car ? 0.3 : AppData.CurrentReport.Regulation.MotorBikeCompensation;
+        return 0.3; // VehicleUsed == Vehicle.Car ? 0.3 : AppData.CurrentReport.Regulation.MotorBikeCompensation;
     }
 
-    private void AddEntry() => AppData.CurrentReport?.ImageMapRoute.Add(new());
+    private void AddEntry() { } // => AppData.CurrentReport?.ImageMapRoute.Add(new());
 
-    private void OnRemoveClicked(TravelExpenseReport.ImageReference imgRef) {
+    private void OnRemoveClicked(TravelExpenseReport_V0.ImageReference imgRef) {
         if (AppData.CurrentReport == null)
             return;
 
-        AppData.CurrentReport.ImageMapRoute.Remove(imgRef);
+        //AppData.CurrentReport.ImageMapRoute.Remove(imgRef);
 
-        if (AppData.CurrentReport.ImageMapRoute.Count == 0)
-            AppData.CurrentReport.ImageMapRoute.Add(new());
+        //if (AppData.CurrentReport.ImageMapRoute.Count == 0)
+        //    AppData.CurrentReport.ImageMapRoute.Add(new());
     }
 }

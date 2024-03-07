@@ -11,7 +11,7 @@ public partial class StepFederationDataEntry {
                 return;
 
             AppData.CurrentReport.Federation = AppData.Federations.Find(f => f.Id == value);
-            AppData.CurrentReport.FigureOutRegulation();
+            //AppData.CurrentReport.FigureOutRegulation();
         }
     }
 
@@ -20,26 +20,26 @@ public partial class StepFederationDataEntry {
             return;
 
         if (AppData.CurrentReport.Federation == null) {
-            if (AppData.CurrentReport.Pirate?.Federation != null) {
-                AppData.CurrentReport.Federation = AppData.CurrentReport.Pirate.Federation;
+            if (AppData.CurrentReport.User?.Federation != null) {
+                AppData.CurrentReport.Federation = AppData.CurrentReport.User.Federation;
             } else {
                 AppData.CurrentReport.Federation = AppData.Federations[0];
             }
 
-            AppData.CurrentReport.FigureOutRegulation();
+            //AppData.CurrentReport.FigureOutRegulation();
         }
 
-        AppData.CurrentStep = WizardStep.FederationDataEntry;
+        //AppData.CurrentStep = WizardStep.FederationDataEntry;
     }
 
     private void GoBack() {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.UsedExistingUser) {
+        //if (AppData.CurrentReport.UsedExistingUser) {
             NavigationManager.NavigateTo("/StepUserSelector");
-        } else {
-            NavigationManager.NavigateTo("/StepUserDataEntry");
-        }
+        //} else {
+        //    NavigationManager.NavigateTo("/StepUserDataEntry");
+        //}
     }
 }

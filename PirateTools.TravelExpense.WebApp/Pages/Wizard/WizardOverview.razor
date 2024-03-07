@@ -1,5 +1,4 @@
-﻿@page "/Overview"
-@using PirateTools.Models
+﻿@using PirateTools.Models
 
 @if (AppData.CurrentReport == null) {
     return;
@@ -24,13 +23,13 @@
     </NavLink>
 </div>
 
-@if (AppData.CurrentReport.UsedExistingUser) {
+@if (true) {
     <div class="mb-3">
         <NavLink href="/StepUserSelector" class="no-decoration">
             <div class="card box-highlight pointer">
                 <div class="card-body">
                     <h5 class="card-title">Existierenden Benutzer auswählen</h5>
-                    <p class="card-text">Aktuell gewählt: @AppData.CurrentReport.Pirate?.Name</p>
+                    <p class="card-text">Aktuell gewählt: @AppData.CurrentReport.User?.Name</p>
                 </div>
             </div>
         </NavLink>
@@ -41,7 +40,7 @@
             <div class="card box-highlight pointer">
                 <div class="card-body">
                     <h5 class="card-title">Benutzerdaten editieren</h5>
-                    <p class="card-text">Daten angegeben für: @AppData.CurrentReport.Pirate?.Name</p>
+                    <p class="card-text">Daten angegeben für: @AppData.CurrentReport.User?.Name</p>
                 </div>
             </div>
         </NavLink>
@@ -85,7 +84,7 @@
     </NavLink>
 </div>
 
-@if (AppData.CurrentReport.VehicleUsed.IsPrivateVehicle()) {
+@* @if (AppData.CurrentReport.VehicleUsed.IsPrivateVehicle()) {
     <div class="mb-3">
         <NavLink href=@("/StepTravelCostsVehicle/" + (int)AppData.CurrentReport.VehicleUsed) class="no-decoration">
             <div class="card box-highlight pointer">
@@ -105,7 +104,7 @@
             </div>
         </NavLink>
     </div>
-}
+} *@
 
 <div class="mb-3">
     <NavLink href="/StepNightlyCostTypeSelection" class="no-decoration">
@@ -120,7 +119,7 @@
     </NavLink>
 </div>
 
-@if (AppData.CurrentReport.AccommodationType == AccommodationType.Specified) {
+@* @if (AppData.CurrentReport.AccommodationType == AccommodationType.Specified) {
     <div class="mb-3">
         <NavLink href="/StepNightlyCostExact" class="no-decoration">
             <div class="card box-highlight pointer">
@@ -133,7 +132,7 @@
             </div>
         </NavLink>
     </div>
-}
+} *@
 
 <div class="mb-3">
     <NavLink href="/StepOtherCostsSelection" class="no-decoration">
@@ -148,7 +147,7 @@
     </NavLink>
 </div>
 
-@if (AppData.CurrentReport.OtherCosts.Count > 0) {
+@* @if (AppData.CurrentReport.OtherCosts.Count > 0) {
     <div class="mb-3">
         <NavLink href="/StepOtherCostsOverview" class="no-decoration">
             <div class="card box-highlight pointer">
@@ -161,7 +160,7 @@
             </div>
         </NavLink>
     </div>
-}
+} *@
 
 <div class="mb-3">
     <NavLink href="/StepDonationSelection" class="no-decoration">
@@ -176,7 +175,7 @@
     </NavLink>
 </div>
 
-@if (!AppData.CurrentReport.IsDonatingAll()) {
+@* @if (!AppData.CurrentReport.IsDonatingAll()) {
     <div class="mb-3">
         <NavLink href="/StepBankInformationEntry" class="no-decoration">
             <div class="card box-highlight pointer">
@@ -189,7 +188,7 @@
             </div>
         </NavLink>
     </div>
-}
+} *@
 
 @if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
     <div class="mb-3">

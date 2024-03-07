@@ -1,0 +1,22 @@
+﻿@page "/TravelExpenseReport/FederationSelection"
+@inherits WizardComponentBase
+
+@if (Report == null || Report.User == null) {
+    <SpinnerComponent />
+    return;
+}
+
+<h1>Verband</h1>
+
+<div class="mb-3">
+    <label class="form-label">Verband (Für welchen Verband bist du gereist)</label>
+    <select class="form-select" @bind=SelectedFedeationId>
+        @foreach (var federation in AppData.Federations.Where(f => f.CanBeUsedForReport)) {
+            <option value=@federation.Id>@federation.FullName()</option>
+        }
+    </select>
+</div>
+<div class="mb-3">
+    <label class="form-label">Funktion (Vorstand, Beauftragt, etc.)</label>
+    <input class="form-control" @bind=Report.Function />
+</div>

@@ -25,20 +25,20 @@ public partial class StepSummary {
     public required FontService FontService { get; set; }
 
     protected override void OnParametersSet() {
-        AppData.CurrentStep = WizardStep.Summary;
+        //AppData.CurrentStep = WizardStep.Summary;
     }
 
     private void GoBack() {
         if (AppData.CurrentReport == null)
             return;
 
-        if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
-            NavigationManager.NavigateTo("/StepEntryIssues");
-        } else if (AppData.CurrentReport.IsDonatingAll()) {
-            NavigationManager.NavigateTo("/StepDonationSelection");
-        } else {
-            NavigationManager.NavigateTo("/StepBankInformationEntry");
-        }
+        //if (TravelExpenseReportValidator.ValidateReport(AppData.CurrentReport).Any()) {
+        //    NavigationManager.NavigateTo("/StepEntryIssues");
+        //} else if (AppData.CurrentReport.IsDonatingAll()) {
+        //    NavigationManager.NavigateTo("/StepDonationSelection");
+        //} else {
+        //    NavigationManager.NavigateTo("/StepBankInformationEntry");
+        //}
     }
 
     private async Task BuildPDF() => await Build(true);
@@ -56,8 +56,8 @@ public partial class StepSummary {
         await FontService.LoadFontAsync("OpenSans-Italic.ttf");
         await FontService.LoadFontAsync("OpenSans-BoldItalic.ttf");
 
-        await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService,
-            StorageManager, AppData, readOnly);
+        //await PdfBuilder.BuildPdfAsync(AppData.CurrentReport, FontService, Http, Culture, DownloadFileService,
+        //    StorageManager, AppData, readOnly);
         modal.Close();
     }
 }

@@ -1,4 +1,4 @@
-using PirateTools.Models;
+using PirateTools.Models.Legacy;
 using PirateTools.TravelExpense.WebApp.Models;
 
 namespace PirateTools.TravelExpense.WebApp.Pages.Wizard;
@@ -8,21 +8,21 @@ public partial class StepNightlyCostExact {
         if (AppData.CurrentReport == null)
             return;
 
-        if (AppData.CurrentReport.ImageAccommodationReceipt.Count == 0)
-            AppData.CurrentReport.ImageAccommodationReceipt.Add(new());
+        //if (AppData.CurrentReport.ImageAccommodationReceipt.Count == 0)
+        //    AppData.CurrentReport.ImageAccommodationReceipt.Add(new());
 
-        AppData.CurrentStep = WizardStep.NightlyCostTypeSelection;
+        //AppData.CurrentStep = WizardStep.NightlyCostTypeSelection;
     }
 
-    private void AddEntry() => AppData.CurrentReport?.ImageAccommodationReceipt.Add(new());
+    private void AddEntry() { } // => AppData.CurrentReport?.ImageAccommodationReceipt.Add(new());
 
-    private void OnRemoveClicked(TravelExpenseReport.ImageReference imgRef) {
+    private void OnRemoveClicked(TravelExpenseReport_V0.ImageReference imgRef) {
         if (AppData.CurrentReport == null)
             return;
 
-        AppData.CurrentReport.ImageAccommodationReceipt.Remove(imgRef);
+        //AppData.CurrentReport.ImageAccommodationReceipt.Remove(imgRef);
 
-        if (AppData.CurrentReport.ImageAccommodationReceipt.Count == 0)
-            AppData.CurrentReport.ImageAccommodationReceipt.Add(new());
+        //if (AppData.CurrentReport.ImageAccommodationReceipt.Count == 0)
+        //    AppData.CurrentReport.ImageAccommodationReceipt.Add(new());
     }
 }

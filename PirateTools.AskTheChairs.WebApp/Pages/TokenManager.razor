@@ -1,0 +1,45 @@
+﻿@page "/Token"
+<PageTitle>Ask your BuVo</PageTitle>
+
+<h1 class="mb-4 mt-4">Token Manager</h1>
+
+<div class="mb-4">
+    <h4>Neuen Token anfordern</h4>
+
+    <label class="form-label">E-Mail</label>
+    <div class="input-group">
+        <input type="email" class="form-control" @bind=EMail />
+        <button class="btn btn-outline-primary" @onclick=RequestToken disabled="@Submitting">Anfordern</button>
+    </div>
+
+    <small>
+        Deine E-Mail wird durch diese Aktion nicht auf der Server-Seite gespeichert.
+        Sie wird nur benutzt um dir den Token zu senden und danach wieder vergessen.
+    </small>
+    @if (!string.IsNullOrEmpty(RequestTokenResult)) {
+        <br />
+        <small>
+            @RequestTokenResult
+        </small>
+    }
+</div>
+
+<div class="mb-4">
+    <h4>Token eintragen</h4>
+
+    <label class="form-label">Token</label>
+    <div class="input-group">
+        <input class="form-control" @bind=AppStateService.Token />
+        <button class="btn btn-outline-primary" @onclick=CheckToken disabled="@Submitting">Prüfen</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(CheckTokenResult)) {
+        <small>
+            @CheckTokenResult
+        </small>
+    }
+</div>
+
+<div>
+    <a href="/" class="btn btn-success">Zurück</a>
+</div>

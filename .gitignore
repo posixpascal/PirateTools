@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PirateTools.Harbor/**/config.json
+/PirateTools.Harbor/**/questions.json
+/PirateTools.Harbor/**/tokens.json

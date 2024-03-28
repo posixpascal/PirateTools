@@ -1,0 +1,65 @@
+﻿@page "/"
+<PageTitle>Ask your BuVo</PageTitle>
+
+<h1 class="mb-4 mt-4">Ask your BuVo</h1>
+
+<div class="row mb-4">
+    <div class="d-flex justify-content-between align-items-baseline">
+        @if (string.IsNullOrEmpty(AppState.Token)) {
+            <p>Um Fragen zu stellen musst du dir einen Token generieren.</p>
+        } else if (AppState.ActionsLeft <= 0) {
+            <p>Dein Token hat keine Aktionen mehr, generier dir einen Neuen um fort zu fahren.</p>
+        } else {
+            <p>Du hast noch @AppState.ActionsLeft Aktionen mit deinem aktuellen Token</p>
+        }
+
+        <a href="/Token" class="btn btn-primary">Token Manager</a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h4>Aktuelle Fragen</h4>
+            <p>Hier stehen alle Fragen die in den letzten 90 Tagen gestellt wurden</p>
+        </div>
+        <div>
+            @if (!string.IsNullOrEmpty(AppState.Token) && AppState.ActionsLeft > 0) {
+                <a href="/Ask" class="btn btn-primary">Frage stellen</a>
+            }
+        </div>
+    </div>
+
+    @if (AppState.Questions == null) {
+        <p>Fragen werden geladen ...</p>
+    } else {
+        if (AppState.Questions.Count == 0) {
+            <p>Es wurden noch keine Fragen gestellt</p>
+        } else {
+            <div class="accordion">
+                @foreach (var question in AppState.Questions) {
+                    <div class="accordion-item">
+                        <h5 class="accordion-header">
+                            <button class="accordion-button @(question == OpenQuestion ? "" : "collapsed")"
+                                    @onclick=@(() => Open(question))>
+                                @question.Title
+                            </button>
+                        </h5>
+
+                        <div class="accordion-collapse collapse @(question == OpenQuestion ? "show" : "")">
+                            <div class="accordion-body">
+                                <p>
+                                    @foreach (var slice in question.Content.Split(Environment.NewLine)) {
+                                        @slice
+                                        <br />
+                                    }
+                                </p>
+                                <small>Gefragt am @question.AskedDateTime.ToShortDateString()</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

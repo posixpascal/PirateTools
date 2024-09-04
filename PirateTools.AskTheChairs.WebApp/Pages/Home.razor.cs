@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using PirateTools.AskTheChairs.WebApp.Models;
 using PirateTools.AskTheChairs.WebApp.Services;
-using PirateTools.Models.AskTheChairs;
+using PirateTools.Models.AskYourChairs;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -12,12 +15,14 @@ public partial class Home {
     public required AppStateService AppState { get; set; }
     [Inject]
     public required BackendService BackendService { get; set; }
+    [Inject]
+    public required HttpClient Http { get; set; }
 
     private Question? OpenQuestion;
 
     protected override async Task OnParametersSetAsync() {
-        var questions = await BackendService.ApiClient.GetFromJsonAsync<List<Question>>(
-            "AskYourChairs/GetAllQuestions");
+        var questions = await BackendService.ApiClient!.GetFromJsonAsync<List<Question>>(
+            "AskYourChairs/GetQuestions");
 
         if (questions != null) {
             AppState.Questions = questions;

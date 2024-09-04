@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PirateTools.Harbor.Services;
-using PirateTools.Models.AskTheChairs;
+using PirateTools.Models.AskYourChairs;
 using System;
 using System.Collections.Generic;
 

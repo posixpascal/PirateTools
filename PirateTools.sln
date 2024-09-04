@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PirateTools.Web.Common", "PirateTools.Web.Common\PirateTools.Web.Common.csproj", "{A8076660-A5D7-4FF9-B577-90D4EB8B0BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateTools.Harbor", "PirateTools.Harbor\PirateTools.Harbor.csproj", "{552308B5-814B-4462-8562-D35B8331126F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PirateTools.Harbor", "PirateTools.Harbor\PirateTools.Harbor.csproj", "{552308B5-814B-4462-8562-D35B8331126F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PirateTools.AskTheChairs.WebApp", "PirateTools.AskTheChairs.WebApp\PirateTools.AskTheChairs.WebApp.csproj", "{FFE668D9-CE2A-4430-9C40-21D10B5AFE6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PirateTools.AskTheChairs.WebApp", "PirateTools.AskTheChairs.WebApp\PirateTools.AskTheChairs.WebApp.csproj", "{FFE668D9-CE2A-4430-9C40-21D10B5AFE6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

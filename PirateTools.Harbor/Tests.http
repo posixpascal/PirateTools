@@ -1,0 +1,29 @@
+@baseUrl = https://localhost:7063/api
+@email = test@test.de
+@authToken = ghqlyghvlanizrpbcyqqffqfrxmrcyoc
+
+GET {{baseUrl}}/AskYourChairs/GetQuestions
+
+###
+
+POST {{baseUrl}}/AskYourChairs/AskQuestion
+Content-Type: application/json
+AuthToken: {{authToken}}
+
+{
+    "Title": "Test Frage #2",
+    "Content": "Test\nTest",
+    "EMail": "{{email}}"
+}
+
+###
+
+GET {{baseUrl}}/AskYourChairs/CheckToken
+AuthToken: {{authToken}}
+
+###
+
+POST {{baseUrl}}/AskYourChairs/RequestToken
+Content-Type: application/json
+
+"{{email}}"

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using PirateTools.Harbor.Endpoints.AskYourChairs;
 using PirateTools.Harbor.Models;
 using PirateTools.Harbor.Services;
+using PirateTools.Harbor.SimpleEndpoints;
 using System;
 using System.IO;
 using System.Text.Json;
@@ -34,13 +36,14 @@ public static class Program {
         builder.Services.AddSingleton(new SmtpService(config));
 
         var app = builder.Build();
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
+        //app.UseHttpsRedirection();
 
         app.UseCors("default");
-        app.MapControllers();
+
+        app.MapSimple<GetQuestions>("api/AskYourChairs");
+        app.MapSimple<AskQuestion>("api/AskYourChairs");
+        app.MapSimple<CheckToken>("api/AskYourChairs");
+        app.MapSimple<RequestToken>("api/AskYourChairs");
 
         app.Run();
     }

@@ -37,9 +37,10 @@ public partial class TokenManager {
     private async Task CheckToken() {
         CheckTokenResult = null;
 
+        BackendService.ApiClient.DefaultRequestHeaders.Add("AuthToken", AppStateService.Token);
+
         Submitting = true;
-        var response = await BackendService.ApiClient.PostAsJsonAsync(
-            "AskYourChairs/CheckToken", AppStateService.Token);
+        var response = await BackendService.ApiClient.GetAsync("AskYourChairs/CheckToken");
         Submitting = false;
 
         if (int.TryParse(await response.Content.ReadAsStringAsync(), out var usagesLeft)) {

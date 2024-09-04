@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PirateTools.Models.AskTheChairs;
+namespace PirateTools.Models.AskYourChairs;
 
 public class Question {
     public string Title { get; set; } = "";

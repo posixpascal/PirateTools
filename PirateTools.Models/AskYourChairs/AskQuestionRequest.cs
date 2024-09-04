@@ -1,4 +1,4 @@
-﻿namespace PirateTools.Models.AskTheChairs;
+﻿namespace PirateTools.Models.AskYourChairs;
 
 public class AskQuestionRequest {
     public required string Token { get; set; }

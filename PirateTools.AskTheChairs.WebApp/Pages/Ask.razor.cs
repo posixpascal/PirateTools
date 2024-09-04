@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using PirateTools.AskTheChairs.WebApp.Services;
-using PirateTools.Models.AskTheChairs;
+using PirateTools.Models.AskYourChairs;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -31,14 +31,9 @@ public partial class Ask {
             EMail = EMail
         };
 
-        var req = new AskQuestionRequest {
-            Question = question,
-            Token = AppStateService.Token ?? ""
-        };
-
         Submitting = true;
         var response = await BackendService.ApiClient.PostAsJsonAsync(
-            "AskYourChairs/AskQuestion", req);
+            "AskYourChairs/AskQuestion", question);
         Submitting = false;
 
         if (response.IsSuccessStatusCode) {

@@ -1,4 +1,4 @@
-﻿using PirateTools.Models.AskTheChairs;
+﻿using PirateTools.Models.AskYourChairs;
 using System.Collections.Generic;
 
 namespace PirateTools.AskTheChairs.WebApp.Services;
